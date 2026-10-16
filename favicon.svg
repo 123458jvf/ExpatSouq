@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="76" fill="#073d31"/>
+<path d="M92 222 256 86 420 222" fill="none" stroke="#efa844" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M132 208v150h248V208" fill="none" stroke="#fff" stroke-width="24" stroke-linejoin="round"/>
+<path d="M222 358v-92h68v92" fill="#efa844"/>
+<text x="256" y="426" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="62" font-weight="800" fill="#fff" textLength="410" lengthAdjust="spacingAndGlyphs">ExpatSouq</text>
+</svg>
