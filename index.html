@@ -161,10 +161,21 @@ $("forgotBtn")?.addEventListener("click",async e=>{e.stopImmediatePropagation();
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
 
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const postViewCounts=new Map();
+const isProductionHost=location.hostname.toLowerCase()==="expatsouq.vercel.app";
+function initializePostViewCounts(){liveAds.forEach(ad=>{if(ad.id&&!postViewCounts.has(ad.id))postViewCounts.set(ad.id,0)})}
+function recordSiteVisit(){
+ let uniqueVisitor=false;
+ try{uniqueVisitor=localStorage.getItem("expatsouqUniqueVisitorCounted")!=="1"}catch(err){console.warn("Could not check visitor storage; counting this browser visit as a new visitor",err);uniqueVisitor=true}
+ setDoc(doc(db,"siteAnalytics","summary"),{totalVisits:increment(1),uniqueVisitors:increment(uniqueVisitor?1:0)},{merge:true})
+  .then(()=>{if(uniqueVisitor)try{localStorage.setItem("expatsouqUniqueVisitorCounted","1")}catch(err){console.warn("Could not persist visitor count marker",err)}})
+  .catch(err=>console.error("Could not record website visit",err));
+}
+if(isProductionHost)recordSiteVisit();
 // Country -> city -> area/locality selectors. Country/city lists are loaded from a public geographic dataset.
 const fallbackCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China","Colombia","Comoros","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","DR Congo","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Republic of the Congo","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 let geographicData = [];
@@ -241,10 +252,25 @@ const samples=[
 let liveAds=[],activeCategory="",activePlace="",currentUser=null;
 const adGrid=document.getElementById("adGrid"),noResults=document.getElementById("noResults");
 function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function renderAds(){const term=document.getElementById("query").value.trim().toLowerCase(),loc=document.getElementById("location").value,country=document.getElementById("country").value,area=document.getElementById("area").value.trim().toLowerCase();const all=[...liveAds,...samples];const filtered=all.filter(a=>(!term||[a.title,a.category,a.sub,a.city,a.country,a.desc].join(" ").toLowerCase().includes(term))&&(!loc||String(a.city||"").toLowerCase()===loc.toLowerCase())&&(!country||String(a.country||"").toLowerCase()===country.toLowerCase())&&(!area||String(a.area||"").toLowerCase().includes(area))&&(!activePlace||String(a.city||"").toLowerCase().includes(activePlace.toLowerCase())||String(a.country||"").toLowerCase().includes(activePlace.toLowerCase()))&&(!activeCategory||[a.category,a.sub].some(x=>String(x||"").toLowerCase()===activeCategory.toLowerCase())||String(a.category||"").toLowerCase().includes(activeCategory.toLowerCase())));adGrid.innerHTML=filtered.map(a=>'<article class="adcard"><div class="advisual">'+(a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌"))+'</div><div class="adbody"><span class="tag">'+safe(a.sub||a.category||"CLASSIFIED")+'</span><h3>'+safe(a.title)+'</h3><div class="price">'+(a.price!==null&&a.price!==undefined&&a.price!==""?"SAR "+safe(a.price)+(a.unit||""):"Contact advertiser")+'</div><div class="admeta">📍 '+safe(a.city||"Location not specified")+(a.area?", "+safe(a.area):"")+(a.country?", "+safe(a.country):"")+'</div><p class="admeta">'+safe(a.desc||a.description||"")+'</p><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div></div></article>').join("");noResults.style.display=filtered.length?"none":"block";document.getElementById("adSub").textContent=filtered.length+" listings shown · sample previews and approved community ads"}
+function renderAds(){
+ const term=document.getElementById("query").value.trim().toLowerCase(),loc=document.getElementById("location").value,country=document.getElementById("country").value,area=document.getElementById("area").value.trim().toLowerCase();
+ const all=[...liveAds,...samples];
+ const filtered=all.filter(a=>(!term||[a.title,a.category,a.sub,a.city,a.country,a.desc].join(" ").toLowerCase().includes(term))&&(!loc||String(a.city||"").toLowerCase()===loc.toLowerCase())&&(!country||String(a.country||"").toLowerCase()===country.toLowerCase())&&(!area||String(a.area||"").toLowerCase().includes(area))&&(!activePlace||String(a.city||"").toLowerCase().includes(activePlace.toLowerCase())||String(a.country||"").toLowerCase().includes(activePlace.toLowerCase()))&&(!activeCategory||[a.category,a.sub].some(x=>String(x||"").toLowerCase()===activeCategory.toLowerCase())||String(a.category||"").toLowerCase().includes(activeCategory.toLowerCase())));
+ adGrid.innerHTML=filtered.map(a=>{
+  const title=safe(a.title),category=safe(a.sub||a.category||"CLASSIFIED");
+  const place=[a.city,a.area,a.country].filter(Boolean).map(safe).join(", ")||"Location not specified";
+  const price=a.price!==null&&a.price!==undefined&&a.price!==""?"SAR "+safe(a.price)+(a.unit||""):"Contact advertiser";
+  const viewKey=adShareKey(a),viewCount=postViewCounts.get(viewKey);
+  const viewMeta=a.id?'<div class="admeta" data-ad-view-count="'+safe(viewKey)+'">👁 '+(viewCount===undefined?"—":viewCount.toLocaleString())+' views</div>':"";
+  const image=a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌");
+  return '<article class="adcard"><div class="advisual">'+image+'</div><div class="adbody"><span class="tag">'+category+'</span><div class="listing-title-line"><h3>'+title+'</h3><span class="price">'+price+'</span></div><div class="admeta">📍 '+place+'</div><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div>'+viewMeta+'</div></article>';
+ }).join("");
+ noResults.style.display=filtered.length?"none":"block";
+ document.getElementById("adSub").textContent=filtered.length+" listings shown · sample previews and approved community ads";
+}
 document.getElementById("searchForm").addEventListener("submit",e=>{e.preventDefault();activeCategory="";activePlace="";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})});
 document.getElementById("resetFilter").onclick=document.getElementById("clearSearch").onclick=()=>{document.getElementById("query").value="";document.getElementById("location").value="";document.getElementById("country").value="";document.getElementById("area").value="";activeCategory="";activePlace="";renderAds()};
-document.addEventListener("click",e=>{const cat=e.target.closest("[data-category]");if(cat){e.preventDefault();activeCategory=cat.dataset.category;activePlace="";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})}const pl=e.target.closest("[data-place]");if(pl){e.preventDefault();activePlace=pl.dataset.place;document.getElementById("location").value=["Riyadh","Jeddah","Dammam","Jubail","Dubai","Doha"].includes(activePlace)?activePlace:"";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})}const pop=e.target.closest("[data-pop]");if(pop){activePlace=pop.dataset.pop;document.getElementById("location").value="";renderAds()}const ex=e.target.closest("[data-expand]");if(ex){e.preventDefault();const c=categories[Number(ex.dataset.expand)];const parent=ex.closest(".catgroup");parent.querySelector(".catlist").innerHTML=c.subs.map(s=>'<a class="catlink" href="#ads" data-category="'+safe(s)+'">'+safe(s)+'</a>').join("");ex.remove()}});
+document.addEventListener("click",e=>{const cat=e.target.closest("[data-category]");if(cat){e.preventDefault();activeCategory=cat.dataset.category;activePlace="";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})}const pl=e.target.closest("[data-place]");if(pl){e.preventDefault();activePlace=pl.dataset.place;document.getElementById("location").value=["Riyadh","Jeddah","Dammam","Jubail","Dubai","Doha"].includes(activePlace)?activePlace:"";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})}const pop=e.target.closest("[data-pop]");if(pop){activePlace=pop.dataset.pop;document.getElementById("location").value="";renderAds()}const ex=e.target.closest("[data-expand]");if(ex){e.preventDefault();const index=Number(ex.dataset.expand),c=categories[index],parent=ex.closest(".catgroup"),list=parent.querySelector(".catlist"),expanded=ex.dataset.expanded==="true";list.innerHTML=(expanded?c.subs.slice(0,7):c.subs).map(s=>'<a class="catlink" href="#ads" data-category="'+safe(s)+'">'+safe(s)+'</a>').join("");ex.dataset.expanded=String(!expanded);ex.textContent=expanded?"View all "+c.subs.length+" subcategories ↓":"Show fewer ↑"}});
 const authOverlay=document.getElementById("authOverlay"),postOverlay=document.getElementById("postOverlay"),authForm=document.getElementById("authForm"),authMessage=document.getElementById("authMessage"),postMessage=document.getElementById("postMessage");let authMode="login";
 function openAuth(mode="login"){authOverlay.classList.add("show");setAuthMode(mode);authMessage.textContent=""}
 function closeAuth(){authOverlay.classList.remove("show")}
@@ -293,8 +319,152 @@ document.getElementById("footerMyAds").onclick=e=>{e.preventDefault();if(!curren
 document.getElementById("footerPost").onclick=e=>{e.preventDefault();document.getElementById("postBtn").click()};
 onAuthStateChanged(auth,user=>{currentUser=user;const nm=document.getElementById("userName"),lb=document.getElementById("loginBtn"),lo=document.getElementById("logoutBtn"),mb=document.getElementById("myAdsBtn");if(user){nm.hidden=false;nm.textContent=user.email;lb.hidden=true;lo.hidden=false;mb.hidden=false}else{nm.hidden=true;lb.hidden=false;lo.hidden=true;mb.hidden=true}});
 document.getElementById("logoutBtn").onclick=async()=>{await signOut(auth)};
-async function loadApproved(){try{const snap=await getDocs(query(collection(db,"ads"),where("status","==","approved")));liveAds=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));renderAds()}catch(e){console.warn("Could not load approved ads",e);renderAds()}}
+async function loadApproved(){try{const snap=await getDocs(query(collection(db,"ads"),where("status","==","approved")));liveAds=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));initializePostViewCounts();renderAds();const match=location.hash.match(/^#ad=(.+)$/);if(match){const key=decodeURIComponent(match[1]),ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);if(ad)showAdDetails(ad,false)}}catch(e){console.warn("Could not load approved ads",e);renderAds()}}
 loadApproved();renderAds();
+async function loadPostViewCounts(){
+ try{
+  const snap=await getDocs(collection(db,"postViewCounts"));
+  snap.docs.forEach(item=>postViewCounts.set(item.id,Number(item.data().views)||0));
+  initializePostViewCounts();
+  renderAds();
+ }catch(err){console.error("Could not load public post view counts",err)}
+}
+loadPostViewCounts();
+function updatePostViewCount(id,count){
+ postViewCounts.set(id,count);
+ document.querySelectorAll("[data-ad-view-count]").forEach(element=>{
+  if(element.dataset.adViewCount===id)element.textContent="👁 "+count.toLocaleString()+" views";
+ });
+}
+
+const adDetailsStyle=document.createElement("style");
+adDetailsStyle.textContent=".adlist{grid-template-columns:1fr;gap:0}.adlist .adcard{display:grid;grid-template-columns:minmax(0,1fr) 78px;align-items:center;gap:12px;border:0;border-bottom:1px solid var(--line);border-radius:0;overflow:visible;background:transparent;min-height:76px}.adlist .adbody{grid-column:1;grid-row:1;padding:10px 4px}.adlist .adbody .tag{margin:0 0 3px;padding:2px 6px;font-size:9px}.adlist .listing-title-line{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.adlist .adbody h3{display:inline;margin:0;color:#17558c;font-size:14px;line-height:1.35}.adlist .price{font-size:13px}.adlist .admeta{margin-top:3px;font-size:11px}.adlist .advisual{grid-column:2;grid-row:1;width:78px;height:62px;border-radius:4px;background:#edf2ee;font-size:25px;overflow:hidden}.adlist .advisual img{display:block}.adcard{cursor:pointer}.adcard:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.details-overlay{position:fixed;inset:0;z-index:60;display:none;background:var(--paper)}.details-overlay.show{display:flex}.details-dialog{display:flex;flex-direction:column;width:100%;height:100%;max-height:100%;overflow:hidden;padding:0;background:#fff;border-radius:0}.details-toolbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;min-height:58px;padding:10px max(16px,calc((100% - 760px)/2));background:#fff;border-bottom:1px solid var(--line)}.details-toolbar button{min-height:38px;padding:7px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-weight:700;cursor:pointer}.details-toolbar #detailsShareButton{margin-left:auto;background:var(--green);border-color:var(--green);color:#fff}.details-share-status{font-size:12px;color:var(--muted)}.details-share-link{width:100%;max-width:260px;padding:8px;border:1px solid var(--line);border-radius:6px}.details-scroll{width:100%;flex:1;overflow:auto;padding:24px max(20px,calc((100% - 700px)/2)) 40px}.details-dialog h2{margin:0 0 8px}.details-dialog .details-image{display:block;width:100%;max-height:360px;object-fit:contain;background:var(--paper);border-radius:9px;margin:14px 0}.details-dialog .details-price{font-size:22px;font-weight:800;color:var(--green)}.details-dialog .details-meta{color:var(--muted);margin:8px 0}.details-dialog .details-description{white-space:pre-wrap;overflow-wrap:anywhere;margin:18px 0}.details-crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.8}.details-crumbs a{color:inherit;text-decoration:none}.details-crumbs a:hover,.details-crumbs a:focus-visible{color:var(--green);text-decoration:underline}.details-crumb-separator{color:#98a79c}.details-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;padding:14px 0;margin:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.details-fact{font-size:13px;overflow-wrap:anywhere}.details-contact{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.details-warning{padding:12px;background:#fff5e5;border:1px solid #f2d8a9;border-radius:8px;color:#704b14;font-size:13px;margin-top:16px}@media(max-width:560px){.adlist .adcard{grid-template-columns:minmax(0,1fr) 60px;gap:8px;min-height:68px}.adlist .advisual{width:60px;height:52px}.adlist .listing-title-line{gap:5px}.adlist .adbody h3{font-size:13px}.details-toolbar{gap:6px;padding:8px 10px}.details-toolbar button{padding:6px 10px}.details-share-status{font-size:11px}.details-share-link{max-width:140px}.details-scroll{padding:20px 16px 32px}.details-facts{grid-template-columns:1fr}.details-dialog .details-image{max-height:260px}}";
+document.head.append(adDetailsStyle);
+const detailsOverlay=document.createElement("div");
+detailsOverlay.className="details-overlay";
+detailsOverlay.id="adDetailsOverlay";
+detailsOverlay.setAttribute("role","dialog");
+detailsOverlay.setAttribute("aria-modal","true");
+detailsOverlay.setAttribute("aria-labelledby","adDetailsTitle");
+detailsOverlay.innerHTML='<section class="details-dialog"><header class="details-toolbar"><button id="detailsBackButton" type="button">← Back</button><span id="detailsShareStatus" class="details-share-status" role="status" aria-live="polite"></span><input id="detailsShareLink" class="details-share-link" type="url" readonly aria-label="Listing share link" hidden><button id="detailsShareButton" type="button">Share</button></header><div id="adDetailsContent" class="details-scroll"></div></section>';
+document.body.append(detailsOverlay);
+const detailsContent=detailsOverlay.querySelector("#adDetailsContent");
+let activeDetailsKey="";
+function adShareKey(ad){const index=samples.indexOf(ad);return ad.id||`sample-${index>=0?index:safe(ad.title).toLowerCase().replace(/[^a-z0-9]+/g,"-")}`}
+function closeAdDetails(){detailsOverlay.classList.remove("show");activeDetailsKey=""}
+function showAdDetails(ad,updateHistory=true){
+ const shareKey=adShareKey(ad);
+ activeDetailsKey=shareKey;
+ if(updateHistory&&location.hash!=="#ad="+encodeURIComponent(shareKey))history.pushState({expatsouqAdDetails:true},"",location.pathname+location.search+"#ad="+encodeURIComponent(shareKey));
+ const shareStatus=document.getElementById("detailsShareStatus"),shareLink=document.getElementById("detailsShareLink");
+ shareStatus.textContent="";
+ shareLink.hidden=true;
+ shareLink.value=location.href;
+ const title=safe(ad.title||"Classified listing"),category=safe(ad.sub||ad.category||"Classified");
+ const placeText=[ad.city,ad.area,ad.country].filter(Boolean).join(", ")||"Location not specified";
+ const place=safe(placeText);
+ const price=ad.price!==null&&ad.price!==undefined&&ad.price!==""?"SAR "+safe(ad.price)+(ad.unit||""):"Contact advertiser";
+ const description=safe(ad.desc||ad.description||"No description provided.");
+ const phone=String(ad.phone||"").trim(),phoneDigits=phone.replace(/\D/g,"");
+ let whatsappNumber=phoneDigits;
+ if(String(ad.country||"").toLowerCase()==="saudi arabia"&&whatsappNumber.startsWith("0"))whatsappNumber="966"+whatsappNumber.slice(1);
+ const isJob=String(ad.category||ad.sub||"").toLowerCase().includes("job");
+ const locationLink="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(placeText);
+ const categoryTrail=[{label:"Home",type:"home"},{label:"International",type:"international"},...(ad.country?[{label:ad.country,type:"place"}]:[]),...(ad.city?[{label:ad.city,type:"place"}]:[]),...(ad.category?[{label:ad.category,type:"category"}]:[]),...(ad.sub?[{label:ad.sub,type:"category"}]:[])].filter((item,index,items)=>items.findIndex(candidate=>String(candidate.label).toLowerCase()===String(item.label).toLowerCase())===index);
+ let image="";
+ if(ad.imageUrl){try{const url=new URL(ad.imageUrl,location.href);if(url.protocol==="https:"||url.protocol==="http:")image='<img class="details-image" src="'+safe(url.href)+'" alt="'+title+'">'}catch(err){console.warn("Invalid listing image URL",err)}}
+ let posted="";
+ try{const date=ad.createdAt?.toDate?.()||(ad.createdAt?new Date(ad.createdAt):null);if(date&&!Number.isNaN(date.getTime()))posted='<div class="details-fact"><strong>Posted:</strong> '+safe(date.toLocaleString())+'</div>'}catch(err){console.warn("Could not format listing date",err)}
+ const memberSince=ad.memberSince||ad.ownerCreatedAt;
+ let member="";
+ try{const date=memberSince?.toDate?.()||(memberSince?new Date(memberSince):null);if(date&&!Number.isNaN(date.getTime()))member='<div class="details-fact"><strong>Member since:</strong> '+safe(date.toLocaleDateString(undefined,{month:"long",year:"numeric"}))+'</div>'}catch(err){console.warn("Could not format member date",err)}
+ const postingId=ad.id?'<div class="details-fact"><strong>Posting ID:</strong> '+safe(ad.id)+'</div>':"";
+ const map='<a class="btn" href="'+safe(locationLink)+'" target="_blank" rel="noopener noreferrer">View location on Google Maps</a>';
+ const contact=phone?'<a class="btn" href="tel:'+safe(phoneDigits)+'">Call poster</a>'+(whatsappNumber?'<a class="btn green" href="https://wa.me/'+safe(whatsappNumber)+'" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>':""):"";
+ const warning=isJob?'<div class="details-warning"><strong>Job safety:</strong> Never pay a fee to apply for a job. Verify the employer and offer before sharing personal documents.</div>':"";
+ const crumbs=categoryTrail.map((item,index)=>'<a href="#ads" data-breadcrumb="'+safe(item.type)+'" data-value="'+safe(item.label)+'">'+safe(item.label)+'</a>'+(index<categoryTrail.length-1?'<span class="details-crumb-separator" aria-hidden="true">/</span>':"")).join("");
+ detailsContent.innerHTML='<nav class="details-crumbs" aria-label="Breadcrumb">'+crumbs+'</nav><h2 id="adDetailsTitle">'+title+'</h2>'+image+'<div class="details-price">'+price+'</div><div class="details-meta">📍 '+place+'</div><div class="details-facts">'+posted+member+'<div class="details-fact"><strong>Category:</strong> '+category+'</div>'+postingId+(ad.id?'<div class="details-fact" id="adViewCount" role="status">Views: counting…</div>':'')+'</div>'+map+'<div class="details-description">'+description+'</div>'+(contact?'<div class="details-contact">'+contact+'</div>':"")+warning;
+ detailsOverlay.classList.add("show");
+ detailsContent.scrollTop=0;
+ document.getElementById("detailsBackButton").focus();
+ if(ad.id){
+  const viewCountElement=document.getElementById("adViewCount");
+  if(isProductionHost){
+   setDoc(doc(db,"postViewCounts",shareKey),{views:increment(1)},{merge:true})
+    .then(()=>getDoc(doc(db,"postViewCounts",shareKey)))
+    .then(snapshot=>{const count=Number(snapshot.data()?.views);if(!Number.isFinite(count))throw new Error("View counter returned an invalid value.");updatePostViewCount(shareKey,count);if(viewCountElement)viewCountElement.textContent="Views: "+count.toLocaleString()})
+    .catch(err=>{console.error("Could not record listing view",shareKey,err);if(viewCountElement)viewCountElement.textContent="Views unavailable"});
+  }else{
+   const count=postViewCounts.get(shareKey);
+   if(viewCountElement)viewCountElement.textContent=count===undefined?"Views: —": "Views: "+count.toLocaleString();
+  }
+ }
+}
+function getVisiblePublicAds(){
+ const term=document.getElementById("query").value.trim().toLowerCase(),loc=document.getElementById("location").value,country=document.getElementById("country").value,area=document.getElementById("area").value.trim().toLowerCase();
+ return [...liveAds,...samples].filter(a=>(!term||[a.title,a.category,a.sub,a.city,a.country,a.desc].join(" ").toLowerCase().includes(term))&&(!loc||String(a.city||"").toLowerCase()===loc.toLowerCase())&&(!country||String(a.country||"").toLowerCase()===country.toLowerCase())&&(!area||String(a.area||"").toLowerCase().includes(area))&&(!activePlace||String(a.city||"").toLowerCase().includes(activePlace.toLowerCase())||String(a.country||"").toLowerCase().includes(activePlace.toLowerCase()))&&(!activeCategory||[a.category,a.sub].some(x=>String(x||"").toLowerCase()===activeCategory.toLowerCase())||String(a.category||"").toLowerCase().includes(activeCategory.toLowerCase())));
+}
+function prepareAdCards(){
+ adGrid.querySelectorAll("article.adcard").forEach(card=>{
+  if(card.querySelector("[data-edit-ad], [data-delete-ad]"))return;
+  const title=card.querySelector("h3")?.textContent||"classified listing";
+  card.tabIndex=0;
+  card.setAttribute("role","button");
+  card.setAttribute("aria-label","View details for "+title);
+ });
+}
+new MutationObserver(prepareAdCards).observe(adGrid,{childList:true,subtree:true});
+prepareAdCards();
+adGrid.addEventListener("click",event=>{
+ const card=event.target.closest("article.adcard");
+ if(!card||!adGrid.contains(card)||event.target.closest("button, a")||card.querySelector("[data-edit-ad], [data-delete-ad]"))return;
+ const cards=[...adGrid.querySelectorAll("article.adcard")],index=cards.indexOf(card),ad=getVisiblePublicAds()[index];
+ if(ad)showAdDetails(ad);
+});
+adGrid.addEventListener("keydown",event=>{
+ if((event.key==="Enter"||event.key===" ")&&event.target.matches("article.adcard[role=button]")){event.preventDefault();event.target.click()}
+});
+document.getElementById("detailsBackButton").addEventListener("click",()=>{
+ if(history.state?.expatsouqAdDetails)history.back();
+ else{history.replaceState(history.state,"",location.pathname+location.search+"#ads");closeAdDetails()}
+});
+document.getElementById("detailsShareButton").addEventListener("click",async()=>{
+ const title=document.getElementById("adDetailsTitle")?.textContent||"ExpatSouq listing",url=location.href,status=document.getElementById("detailsShareStatus"),link=document.getElementById("detailsShareLink");
+ if(navigator.share){try{await navigator.share({title,text:title,url});status.textContent="";return}catch(err){if(err.name==="AbortError")return;console.warn("Native sharing failed; trying clipboard",err)}}
+ try{await navigator.clipboard.writeText(url);status.textContent="Link copied. Share it with others.";link.hidden=true}catch(err){console.warn("Could not copy the listing link",err);link.value=url;link.hidden=false;link.focus();link.select();status.textContent="Copy this link to share the listing."}
+});
+detailsContent.addEventListener("click",event=>{
+ const link=event.target.closest("a[data-breadcrumb]");
+ if(!link)return;
+ event.preventDefault();
+ const type=link.dataset.breadcrumb;
+ document.getElementById("query").value="";
+ document.getElementById("location").value="";
+ document.getElementById("country").value="";
+ document.getElementById("area").value="";
+ activePlace="";
+ activeCategory="";
+ if(type==="place")activePlace=link.dataset.value;
+ if(type==="category")activeCategory=link.dataset.value;
+ history.replaceState(null,"",location.pathname+location.search+"#ads");
+ closeAdDetails();
+ renderAds();
+ if(type==="home")window.scrollTo({top:0,behavior:"smooth"});
+ else document.getElementById("ads").scrollIntoView({behavior:"smooth"});
+});
+window.addEventListener("popstate",()=>{
+ const match=location.hash.match(/^#ad=(.+)$/);
+ if(match){const key=decodeURIComponent(match[1]),ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);if(ad)showAdDetails(ad,false);else closeAdDetails()}
+ else closeAdDetails();
+});
+window.addEventListener("hashchange",()=>{
+ const match=location.hash.match(/^#ad=(.+)$/);
+ if(!match||detailsOverlay.classList.contains("show"))return;
+ const key=decodeURIComponent(match[1]),ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);
+ if(ad)showAdDetails(ad,false);
+});
+document.getElementById("detailsShareLink").addEventListener("click",event=>event.currentTarget.select());
+document.addEventListener("keydown",event=>{if(event.key==="Escape"&&detailsOverlay.classList.contains("show"))document.getElementById("detailsBackButton").click()});
 
 async function loadPublicJobs(){
  const grid=document.getElementById("jobGrid"),empty=document.getElementById("jobEmpty");

@@ -8,7 +8,7 @@
 <link rel="icon" href="/favicon.svg">
 <style>
 :root{--green:#08634e;--deep:#073d31;--gold:#efa844;--line:#dce6df;--paper:#f6f8f6;--ink:#17251f;--muted:#64746b;--red:#a52222}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);font:15px/1.5 Arial,sans-serif;color:var(--ink)}.wrap{width:min(1100px,calc(100% - 24px));margin:24px auto}.head,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}.head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.logo{font-size:24px;font-weight:900;color:var(--green);text-decoration:none}.logo b{color:var(--gold)}h1{margin:4px 0;font-size:25px}h2{margin:0 0 12px}.muted{font-size:12px;color:var(--muted)}.field{display:block;margin:12px 0}.field span{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;font:inherit}.field textarea{min-height:260px;font-family:Consolas,monospace}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.wide{grid-column:1/-1}.btn{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:8px;font-weight:700;cursor:pointer}.btn.green{background:var(--green);color:#fff;border-color:var(--green)}.btn.red{color:var(--red)}.btn:disabled{opacity:.55;cursor:wait}.tabs{display:flex;gap:8px;overflow:auto;margin:0 0 16px}.tab.active{background:var(--deep);color:#fff;border-color:var(--deep)}.panel[hidden]{display:none!important}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{border:1px solid var(--line);border-radius:9px;padding:14px}.stat strong{display:block;font-size:24px;color:var(--green)}.row{padding:14px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.row h3{margin:0 0 4px;font-size:16px}.actions{display:flex;gap:7px;flex-wrap:wrap}.message{min-height:1.4em;color:var(--green);overflow-wrap:anywhere}.error{color:var(--red)}.badge{display:inline-block;background:#edf4ef;border-radius:99px;padding:3px 8px;font-size:11px}.check{display:flex;gap:8px;align-items:center;margin:12px 0}.check input{width:auto}.empty{padding:14px;border:1px dashed var(--line);border-radius:8px;color:var(--muted)}@media(max-width:650px){.wrap{margin:12px auto}.head,.panel{padding:15px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.field textarea{min-height:210px}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);font:15px/1.5 Arial,sans-serif;color:var(--ink)}.wrap{width:min(1100px,calc(100% - 24px));margin:24px auto}.head,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}.head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.logo{font-size:24px;font-weight:900;color:var(--green);text-decoration:none}.logo b{color:var(--gold)}h1{margin:4px 0;font-size:25px}h2{margin:0 0 12px}.muted{font-size:12px;color:var(--muted)}.field{display:block;margin:12px 0}.field span{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;font:inherit}.field textarea{min-height:260px;font-family:Consolas,monospace}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.wide{grid-column:1/-1}.btn{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:8px;font-weight:700;cursor:pointer}.btn.green{background:var(--green);color:#fff;border-color:var(--green)}.btn.red{color:var(--red)}.btn:disabled{opacity:.55;cursor:wait}.tabs{display:flex;gap:8px;overflow:auto;margin:0 0 16px}.tab.active{background:var(--deep);color:#fff;border-color:var(--deep)}.panel[hidden]{display:none!important}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{border:1px solid var(--line);border-radius:9px;padding:14px}.stat strong{display:block;font-size:24px;color:var(--green)}.row{padding:14px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.row h3{margin:0 0 4px;font-size:16px}.actions{display:flex;gap:7px;flex-wrap:wrap}.message{min-height:1.4em;color:var(--green);overflow-wrap:anywhere}.error{color:var(--red)}.badge{display:inline-block;background:#edf4ef;border-radius:99px;padding:3px 8px;font-size:11px}.check{display:flex;gap:8px;align-items:center;margin:12px 0}.check input{width:auto}.empty{padding:14px;border:1px dashed var(--line);border-radius:8px;color:var(--muted)}@media(max-width:650px){.wrap{margin:12px auto}.head,.panel{padding:15px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.field textarea{min-height:210px}}
 </style>
 </head>
 <body>
@@ -42,7 +42,11 @@
         <div class="stat"><strong id="approvedCount">—</strong>Approved ads</div>
         <div class="stat"><strong id="jobCount">—</strong>Job listings</div>
         <div class="stat"><strong id="userCount">—</strong>Users with ads</div>
+        <div class="stat"><strong id="totalVisitCount">—</strong>Total website visits</div>
+        <div class="stat"><strong id="uniqueVisitorCount">—</strong>Approx. unique browsers</div>
+        <div class="stat"><strong id="totalAdViewCount">—</strong>Total ad views</div>
       </div>
+      <p class="muted">Unique visitors are estimated per browser/device. Browser storage resets and shared devices can affect this number.</p>
       <p class="muted">Use the sections above to moderate ads, maintain jobs, update categories and edit homepage settings.</p>
       <div id="overviewMessage" class="message" role="status"></div>
     </section>
@@ -124,7 +128,7 @@ const DEFAULT_CATEGORIES=[
  {name:"Services",icon:"🛠️",subs:["Accounting","Air Conditioning","Appliance Repair","Automotive","Beautician","Business","Career Counseling","Cargo","Catering","Cleaning","Computer","Construction","Counseling","Creative","Delivery","Dental","Education","Elder Care","ERP","Event Planning","Farm/Garden","Fashion & Design","Financial","Florist","Food & Drink","Food Delivery","Graphic Design","Guides/Interpreters","Health","Household","Immigration","Interior Design","Labor/Moving","Legal","Logistics","Manpower","Marketing","Medical","Mobile Apps","Passenger Transport","Pest Control","Pet Sitting","Photography","Printing","Real Estate","Recycling","Relocation","Restaurants","Satellite","Security","Software Development","Tailoring","Tax Preparation","Technical","Television","Training","Translation","Travel","Web Design & Development","Writing"]},
  {name:"Popular Requests",icon:"📌",subs:["Job Seekers","Items Wanted","Housing Wanted","Roommates","Lessons Wanted"]}
 ];
-let ads=[],jobs=[],users=[],siteConfig={};
+let ads=[],jobs=[],users=[],siteConfig={},siteAnalytics={},postViewCounts=[];
 function safe(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function statusError(err){return err?.code||err?.message||"Unknown error"}
 function setMessage(id,text,error=false){const el=$(id);el.textContent=text;el.classList.toggle("error",error)}
@@ -148,14 +152,18 @@ async function loadAll(){
    getDocs(collection(db,"ads")),
    getDocs(collection(db,"jobs")),
    getDocs(collection(db,"users")),
-   getDoc(doc(db,"siteConfig","home"))
+   getDoc(doc(db,"siteConfig","home")),
+   getDoc(doc(db,"siteAnalytics","summary")),
+   getDocs(collection(db,"postViewCounts"))
   ]);
-  const names=["ads","jobs","users","homepage settings"];
+  const names=["ads","jobs","users","homepage settings","website analytics","post view counts"];
   const failed=results.flatMap((r,i)=>r.status==="rejected"?[names[i]+": "+statusError(r.reason)]:[]);
   if(results[0].status==="fulfilled")ads=results[0].value.docs.map(d=>({id:d.id,...d.data()}));
   if(results[1].status==="fulfilled")jobs=results[1].value.docs.map(d=>({id:d.id,...d.data()}));
   if(results[2].status==="fulfilled")users=results[2].value.docs.map(d=>({id:d.id,...d.data()}));
   if(results[3].status==="fulfilled"&&results[3].value.exists())siteConfig=results[3].value.data();
+  if(results[4].status==="fulfilled"&&results[4].value.exists())siteAnalytics=results[4].value.data();
+  if(results[5].status==="fulfilled")postViewCounts=results[5].value.docs.map(d=>d.data());
   refreshDashboard();renderAds();renderJobs();renderUsers();fillSettings();$("categoriesJson").value=JSON.stringify(Array.isArray(siteConfig.categories)?siteConfig.categories:DEFAULT_CATEGORIES,null,2);
   setMessage("overviewMessage",failed.length?"Loaded available data; some sections need Firestore admin read rules: "+failed.join(" · "):"Dashboard data loaded.");
  }catch(err){setMessage("overviewMessage","Could not load admin data: "+statusError(err),true)}
@@ -166,6 +174,9 @@ function refreshDashboard(){
  $("jobCount").textContent=jobs.length;
  const owners=new Set(ads.map(a=>a.ownerUid).filter(Boolean));users.forEach(u=>owners.add(u.id));
  $("userCount").textContent=owners.size;
+ $("totalVisitCount").textContent=(Number(siteAnalytics.totalVisits)||0).toLocaleString();
+ $("uniqueVisitorCount").textContent=(Number(siteAnalytics.uniqueVisitors)||0).toLocaleString();
+ $("totalAdViewCount").textContent=postViewCounts.reduce((total,item)=>total+(Number(item.views)||0),0).toLocaleString();
 }
 function renderAds(){
  const filter=$("adFilter").value,list=ads.filter(a=>filter==="all"||a.status===filter).sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));
