@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#075e4b"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>ExpatSouq — Classifieds for Expats</title><meta name="description" content="Find jobs, housing, items for sale, services and community classifieds across Saudi Arabia and worldwide."><style>
+:root{--green:#08634e;--deep:#073d31;--gold:#efa844;--ink:#17251f;--muted:#64746b;--line:#dce6df;--paper:#f6f8f6;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Arial,Helvetica,sans-serif}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}.top{background:var(--deep);color:#e3f2e9;padding:7px 0;font-size:12px}.top .wrap{display:flex;justify-content:space-between;gap:10px}.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.navin{display:flex;align-items:center;justify-content:space-between;gap:15px;min-height:68px}.logo{font-weight:900;font-size:25px;letter-spacing:-1px;color:var(--green);white-space:nowrap}.logo b{color:var(--gold)}.navlinks{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:700}.btn{background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:8px;font-weight:700;color:var(--ink)}.btn.green{background:var(--green);color:#fff;border-color:var(--green)}.btn.gold{background:var(--gold);border-color:var(--gold)}.hero{background:linear-gradient(120deg,#e9f4ec,#f9fbf8);padding:32px 0 25px;border-bottom:1px solid var(--line)}.hero h1{font-size:clamp(28px,4vw,43px);line-height:1.12;letter-spacing:-1px;margin:0 0 8px}.hero p{color:var(--muted);margin:0 0 20px}.search{display:grid;grid-template-columns:minmax(180px,2fr) minmax(140px,1fr) minmax(140px,1fr) minmax(140px,1fr) auto;gap:8px;background:#fff;border:1px solid var(--line);padding:9px;border-radius:12px;box-shadow:0 5px 20px #153b2810}.search input,.search select{width:100%;min-width:0;border:1px solid #e5ebe6;border-radius:7px;padding:12px;background:#fff;outline-color:var(--green)}.search button{border:0;border-radius:7px;background:var(--green);color:#fff;padding:12px 19px;font-weight:800}.herofoot{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.pill{border:1px solid #d9e8dd;background:#fff;border-radius:30px;padding:5px 10px;font-size:12px;color:#3b5c4b}.section{padding:27px 0}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:14px}.sectionhead h2{font-size:22px;margin:0}.sectionhead p{margin:3px 0 0;color:var(--muted);font-size:13px}.layout{display:grid;grid-template-columns:1fr 2fr;gap:20px}.panel{background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px}.panel h3{font-size:16px;margin:0 0 12px}.locations{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.locations a{padding:7px 0;border-bottom:1px solid #edf1ee;color:#335d4a;font-size:13px}.locations a:hover,.catlink:hover{color:#b87517;text-decoration:underline}.world{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.world details{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}.world summary{cursor:pointer;color:var(--green);font-weight:750}.world p{font-size:12px;color:var(--muted);margin:8px 0 0}.categorygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.catgroup{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}.catgroup h3{margin:0 0 9px;color:var(--green);font-size:17px}.catgroup h3 a{color:inherit}.catlist{display:grid;grid-template-columns:1fr;gap:0}.catlink{font-size:12.5px;padding:5px 0;border-top:1px solid #eff2ef;color:#405b4b}.catlink strong{font-weight:750}.more{display:block;color:#9b641b;font-size:12px;font-weight:700;margin-top:9px}.popular{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.popular a{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px;font-size:13px;color:var(--green)}.adlist{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.adcard{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}.advisual{height:100px;background:linear-gradient(130deg,#e4f1e7,#f8f7ec);display:grid;place-items:center;font-size:42px}.adbody{padding:13px}.adbody h3{font-size:15px;margin:0 0 6px}.price{color:var(--green);font-weight:800}.admeta{color:var(--muted);font-size:12px;margin-top:6px}.notice{font-size:12px;color:var(--muted);margin-top:12px}.empty{display:none;background:#fff;padding:16px;border:1px solid var(--line);border-radius:8px;color:var(--muted)}.banner{background:var(--deep);color:#fff;border-radius:12px;padding:23px;display:flex;align-items:center;justify-content:space-between;gap:15px}.banner h2{margin:0 0 4px}.banner p{margin:0;color:#d5e9dd}.banner .btn{white-space:nowrap}footer{background:#062f25;color:#d9e9df;margin-top:10px;padding:27px 0}.footgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:25px}.footgrid h4{margin:0 0 9px;color:#fff}.footgrid a{display:block;font-size:12px;color:#d0e4d8;padding:3px 0}.copyright{border-top:1px solid #31574b;margin-top:22px;padding-top:13px;font-size:11px;color:#b7cfc2}.overlay{position:fixed;inset:0;background:#071b15b8;z-index:30;display:none;align-items:center;justify-content:center;padding:16px}.overlay.show{display:flex}.dialog{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:16px;padding:23px;position:relative}.close{position:absolute;right:12px;top:12px;border:0;background:#eef4ef;border-radius:50%;width:32px;height:32px;font-size:21px}.dialog h2{margin:0 35px 5px 0}.dialog p{color:var(--muted);font-size:13px}.tabs{display:flex;background:#eff4f0;padding:4px;border-radius:8px;margin:15px 0}.tabs button{flex:1;border:0;background:none;border-radius:6px;padding:9px;font-weight:700}.tabs button.active{background:#fff;color:var(--green)}.field{display:block;margin:11px 0}.field span{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;outline-color:var(--green);background:#fff}.field textarea{min-height:90px;resize:vertical}.submit{width:100%;background:var(--green);color:#fff;border:0;border-radius:8px;padding:12px;font-weight:800;margin-top:8px}.message{font-size:12px;color:var(--green);overflow-wrap:anywhere}.postgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.wide{grid-column:1/-1}.user{font-size:12px;color:var(--green);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mobilehide{}.tag{font-size:10px;font-weight:800;color:#8a5b15;background:#fff0d9;padding:4px 7px;border-radius:5px;display:inline-block;margin-bottom:7px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.categorygrid{grid-template-columns:repeat(2,minmax(0,1fr))}.search{grid-template-columns:1fr 1fr}.search input:first-child{grid-column:1/-1}.search button{grid-column:1/-1}.adlist{grid-template-columns:repeat(2,1fr)}.navlinks{gap:8px}.world{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.wrap{width:calc(100% - 22px)}.navin{min-height:60px}.logo{font-size:22px}.navlinks{gap:5px}.navlinks .mobilehide{display:none}.btn{padding:9px 10px;font-size:12px}.hero{padding:25px 0 20px}.search{grid-template-columns:1fr}.search input:first-child{grid-column:auto}.search button{grid-column:auto}.section{padding:20px 0}.categorygrid{grid-template-columns:1fr}.locations{grid-template-columns:1fr 1fr}.world{grid-template-columns:1fr 1fr}.adlist{grid-template-columns:1fr 1fr}.advisual{height:75px}.adbody{padding:10px}.adbody h3{font-size:13px}.popular{grid-template-columns:1fr 1fr}.banner{align-items:flex-start;flex-direction:column}.footgrid{grid-template-columns:1fr 1fr}.footgrid>div:first-child{grid-column:1/-1}.postgrid{grid-template-columns:1fr}.wide{grid-column:auto}}@media(max-width:370px){.adlist{grid-template-columns:1fr}.navlinks .smallhide{display:none}}
+
+/* Mobile fit-screen improvements: keep the existing design and features */
+html{width:100%;max-width:100%;overflow-x:hidden;scroll-padding-top:72px}
+body{width:100%;max-width:100%;overflow-x:hidden}
+img,video,iframe{max-width:100%}
+button,input,select,textarea{max-width:100%;min-width:0}
+.wrap{min-width:0}
+.navin,.navlinks,.top .wrap,.sectionhead,.banner,.footgrid,.panel,.catgroup,.adcard{min-width:0}
+@media(max-width:560px){
+  .top .wrap{flex-wrap:wrap;line-height:1.4}
+  .navin{flex-wrap:wrap;justify-content:space-between;gap:8px;padding:8px 0}
+  .navlinks{width:100%;flex:1 1 100%;display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
+  .navlinks .mobilehide{display:none}
+  .navlinks .btn{flex:0 0 auto;padding:9px 10px;white-space:nowrap}
+  .user{max-width:100%;flex:1 1 100%}
+  .hero h1{font-size:clamp(25px,7vw,34px);overflow-wrap:anywhere}
+  .hero p{overflow-wrap:anywhere}
+  .search,.search input,.search select,.search button{width:100%;min-width:0}
+  .herofoot{gap:6px}
+  .pill{max-width:100%;overflow-wrap:anywhere}
+  .sectionhead{align-items:flex-start;flex-wrap:wrap}
+  .sectionhead h2{font-size:20px}
+  .layout,.categorygrid,.postgrid{grid-template-columns:minmax(0,1fr)}
+  .locations,.world,.popular,.adlist{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .catgroup,.panel,.adbody{overflow-wrap:anywhere}
+  .catlink{overflow-wrap:anywhere}
+  .adcard{min-width:0}
+  .adbody h3{overflow-wrap:anywhere}
+  .price,.admeta{overflow-wrap:anywhere}
+  .advisual{max-width:100%}
+  .banner{width:100%;padding:18px}
+  .footgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dialog{width:100%;max-width:100%;max-height:calc(100dvh - 24px);overflow:auto;padding:20px 16px}
+  .field input,.field select,.field textarea{min-width:0;width:100%}
+}
+@media(max-width:370px){
+  .wrap{width:calc(100% - 18px)}
+  .logo{font-size:20px}
+  .navlinks .btn{padding:8px;font-size:11px}
+  .locations,.world,.popular,.adlist{grid-template-columns:minmax(0,1fr)}
+  .advisual{height:70px}
+  .sectionhead .btn{width:100%}
+}
+
+</style><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4273007448994004" crossorigin="anonymous"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"ExpatSouq","url":"https://expatsouq.vercel.app/","logo":"https://expatsouq.vercel.app/favicon.svg"}</script></head>
+<body>
+<div class="top"><div class="wrap"><span>Your Trusted Expat Community in Saudi Arabia</span><span>🌍 Saudi Arabia &nbsp; · &nbsp; Worldwide</span></div></div>
+<header class="nav"><div class="wrap navin"><a class="logo" href="#">⌂ Expat<b>Souq</b></a><nav class="navlinks"><a class="mobilehide" href="#searchForm">Find by location</a><a class="mobilehide" href="#categories">Categories</a><a href="#ads">Browse Ads</a><span id="userName" class="user" hidden></span><button id="loginBtn" class="btn">Log in</button><button id="myAdsBtn" class="btn mobilehide" hidden>My Ads</button><button id="postBtn" class="btn green">＋ Post Ad</button><button id="logoutBtn" class="btn" hidden>Log out</button></nav></div></header>
+<main><section class="hero"><div class="wrap"><h1>Welcome to ExpatSouq!</h1><p>The community marketplace for expatriates. Find local classifieds, jobs, homes, services and great deals.</p><form id="searchForm" class="search"><input id="query" placeholder="Search jobs, cars, rooms, services..." aria-label="Search"><select id="country" aria-label="Country"><option value="">All countries</option></select><select id="location" aria-label="City" disabled><option value="">All cities</option></select><input id="area" list="searchAreaOptions" placeholder="All areas / localities" aria-label="Area or locality"><datalist id="searchAreaOptions"></datalist><button type="submit">Search →</button></form><div class="herofoot"><span class="pill">✓ Browse local ads</span><span class="pill">✓ Create a free account</span><span class="pill">✓ Post your own listing</span></div></div></section>
+<section class="section" id="categories"><div class="wrap"><div class="sectionhead"><div><h2>Browse by Category</h2><p>Explore a wide range of classified ads</p></div><button class="btn" id="resetFilter">Show all</button></div><div class="categorygrid" id="categoryGrid"></div></div></section>
+<section class="section"><div class="wrap"><div class="sectionhead"><div><h2>Popular Searches</h2><p>Quick links to frequently searched classifieds</p></div></div><div class="popular" id="popularSearches"></div></div></section>
+<section class="section" id="ads"><div class="wrap"><div class="sectionhead"><div><h2>Latest Classified Ads</h2><p id="adSub">Browse available sample listings and approved community ads.</p></div><button class="btn" id="clearSearch">Clear search</button></div><div id="adGrid" class="adlist"></div><div id="noResults" class="empty">No ads match this search yet. Try another category or location.</div><p class="notice">Sample listings are clearly marked. Community submissions appear after admin approval.</p></div></section>
+<section class="section"><div class="wrap"><div class="banner"><div><h2>Have something to advertise?</h2><p>Sign in and post your classified ad on ExpatSouq.</p></div><button id="bannerPost" class="btn gold">Post a free ad</button></div></div></section>
+<section class="section" id="jobs"><div class="wrap"><div class="sectionhead"><div><h2>Latest Job Listings</h2><p>Browse opportunities by city, country or remote location. Job links are provided by the poster.</p></div><a class="btn" href="#jobs">Browse Jobs</a></div><div id="jobGrid" class="adlist"><div class="panel">Loading job listings…</div></div><div id="jobEmpty" class="empty">No job listings have been published yet.</div></div></section>
+</main>
+<footer><div class="wrap"><div class="footgrid"><div><a class="logo" style="color:white" href="#">⌂ Expat<b>Souq</b></a><p style="font-size:12px;max-width:350px;color:#d0e4d8">A community classifieds platform for expatriates to connect, buy, sell and find opportunities locally and worldwide.</p></div><div><h4>Platform</h4><a href="#ads">Browse Ads</a><a href="#categories">Categories</a><a href="#" id="footerMyAds">My Ads</a><a href="#postBtn" id="footerPost">Post an Ad</a></div><div><h4>Support</h4><a href="mailto:support@expatsouq.example">Contact Us</a><a href="#privacy">Privacy</a><a href="#terms">Terms of Use</a><a href="#advertising">Advertising</a></div></div><div class="copyright">© 2026 ExpatSouq. All rights reserved. Independent community classifieds platform.</div></div></footer>
+<div class="overlay" id="authOverlay" role="dialog" aria-modal="true"><div class="dialog"><button class="close" id="closeAuth" aria-label="Close">×</button><a class="logo" href="#">⌂ Expat<b>Souq</b></a><h2 id="authTitle" style="margin-top:12px">Welcome back</h2><p id="authIntro">Log in to your account to manage your ads.</p><div class="tabs"><button id="loginTab" class="active">Log in</button><button id="registerTab">Create account</button></div><form id="authForm"><label class="field"><span>Email address</span><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label class="field"><span>Password</span><input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="At least 6 characters"></label><label class="field" id="confirmField" hidden><span>Confirm password</span><input id="confirmPassword" type="password" minlength="6" autocomplete="new-password"></label><button class="submit" id="authSubmit">Log in</button></form><button id="forgotBtn" class="btn" style="border:0;color:var(--green);padding-left:0">Forgot password?</button><div class="message" id="authMessage" role="status"></div></div></div>
+<div class="overlay" id="postOverlay" role="dialog" aria-modal="true"><div class="dialog"><button class="close" id="closePost" aria-label="Close">×</button><h2>Post a classified ad</h2><p>Fill in the details below. Your ad will be submitted for review.</p><form id="postForm"><div class="postgrid"><label class="field wide"><span>Ad title *</span><input id="adTitle" required maxlength="100" placeholder="What are you advertising?"></label><label class="field"><span>Main category *</span><select id="adCategory" required></select></label><label class="field"><span>Subcategory</span><select id="adSubcategory"><option value="">Select category first</option></select></label><label class="field"><span>Country *</span><select id="adCountry" required><option value="Saudi Arabia">Saudi Arabia</option></select></label><label class="field"><span>City *</span><select id="adCity" required disabled><option value="">Choose country first</option></select></label><label class="field"><span>Area / locality</span><input id="adArea" list="postAreaOptions" maxlength="120" placeholder="Choose or type an area"><datalist id="postAreaOptions"></datalist></label><label class="field"><span>Price (optional)</span><input id="adPrice" type="number" min="0" step="0.01" placeholder="e.g. 1500"></label><label class="field"><span>Phone / WhatsApp (optional)</span><input id="adPhone" type="tel" maxlength="30" placeholder="+966..."></label><label class="field wide"><span>Description *</span><textarea id="adDescription" required maxlength="3000" placeholder="Give useful details about your ad"></textarea></label><label class="field wide"><span>Photo URL (optional)</span><input id="adImage" type="url" placeholder="https://..."></label></div><p class="notice">Never share passwords, identity documents or banking details in an ad.</p><button class="submit" id="submitAd">Submit ad for review</button><div id="postMessage" class="message" role="status"></div></form></div></div>
+<script id="fallbackLoginFix">
+(()=>{const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
+const $=id=>document.getElementById(id);
+const showAuth=mode=>{const overlay=$("authOverlay");if(overlay)overlay.classList.add("show");const reg=mode==="register";$("loginTab")?.classList.toggle("active",!reg);$("registerTab")?.classList.toggle("active",reg);$("confirmField").hidden=!reg;$("confirmPassword").required=reg;$("authTitle").textContent=reg?"Create your account":"Welcome back";$("authIntro").textContent=reg?"Join the ExpatSouq community.":"Log in to manage your ads.";$("authSubmit").textContent=reg?"Create account":"Log in";$("forgotBtn").hidden=reg;$("authMessage").textContent=""};
+$("loginBtn")?.addEventListener("click",e=>{e.stopImmediatePropagation();showAuth("login")});
+$("registerTab")?.addEventListener("click",e=>{e.stopImmediatePropagation();showAuth("register")});
+$("loginTab")?.addEventListener("click",e=>{e.stopImmediatePropagation();showAuth("login")});
+$("closeAuth")?.addEventListener("click",e=>{e.stopImmediatePropagation();$("authOverlay").classList.remove("show")});
+$("authForm")?.addEventListener("submit",async e=>{e.preventDefault();e.stopImmediatePropagation();const btn=$("authSubmit"),msg=$("authMessage");btn.disabled=true;msg.textContent="Please wait…";try{
+const [appSdk,authSdk]=await Promise.all([import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"),import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js")]);
+const app=appSdk.getApps().length?appSdk.getApp():appSdk.initializeApp(firebaseConfig);const auth=authSdk.getAuth(app);const email=$("email").value.trim(),password=$("password").value;
+if($("registerTab").classList.contains("active")){if(password!==$("confirmPassword").value)throw new Error("Passwords do not match.");const cred=await authSdk.createUserWithEmailAndPassword(auth,email,password);try{await authSdk.sendEmailVerification(cred.user);msg.textContent="Account created. Verification email sent. Please verify, then log in."}catch{msg.textContent="Account created. You can now log in."}await authSdk.signOut(auth);$("authForm").reset();showAuth("login")}
+else{await authSdk.signInWithEmailAndPassword(auth,email,password);msg.textContent="Login successful."; $("userName").hidden=false;$("userName").textContent=email;$("loginBtn").hidden=true;$("logoutBtn").hidden=false;$("myAdsBtn").hidden=false;setTimeout(()=>$("authOverlay").classList.remove("show"),600)}
+}catch(err){const c=err?.code||"";msg.textContent=({"auth/invalid-credential":"Incorrect email or password.","auth/user-not-found":"No account found. Please create an account.","auth/invalid-email":"Enter a valid email address.","auth/too-many-requests":"Too many attempts. Wait and try again.","auth/network-request-failed":"Network issue. Check your internet connection.","auth/unauthorized-domain":"Add expatsouq.vercel.app to Firebase Authentication authorized domains.","auth/operation-not-allowed":"Enable Email/Password sign-in in Firebase Authentication."})[c]||err.message||("Login failed: "+c)}finally{btn.disabled=false}},true);
+$("forgotBtn")?.addEventListener("click",async e=>{e.stopImmediatePropagation();const email=$("email").value.trim(),msg=$("authMessage");if(!email){msg.textContent="Enter your email above first.";return}try{const [appSdk,authSdk]=await Promise.all([import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"),import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js")]);const app=appSdk.getApps().length?appSdk.getApp():appSdk.initializeApp(firebaseConfig);await authSdk.sendPasswordResetEmail(authSdk.getAuth(app),email);msg.textContent="Password reset email sent. Check inbox and spam."}catch(err){msg.textContent=err.message||"Could not send reset email."}});
+})();
+</script>\n
+<script id="fallbackPostFix">
+(()=> {
+ const $=id=>document.getElementById(id);
+ const cfg={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
+ const showPost=()=>{const p=$("postOverlay");if(p){p.classList.add("show");const m=$("postMessage");if(m)m.textContent="";}};
+ const openLogin=()=>{const a=$("authOverlay");if(a)a.classList.add("show");const m=$("authMessage");if(m)m.textContent="Log in first, then submit your ad.";};
+ ["postBtn","bannerPost"].forEach(id=>$(id)?.addEventListener("click",e=>{e.preventDefault();setTimeout(()=>{if(!$("postOverlay")?.classList.contains("show")&&!$("authOverlay")?.classList.contains("show"))showPost()},0)}));
+ $("closePost")?.addEventListener("click",e=>{e.preventDefault();$("postOverlay")?.classList.remove("show");});
+ $("postOverlay")?.addEventListener("click",e=>{if(e.target===$("postOverlay"))$("postOverlay").classList.remove("show");});
+ const form=$("postForm");
+ if(!form)return;
+ form.addEventListener("submit",async e=>{
+   e.preventDefault();e.stopImmediatePropagation();
+   const btn=$("submitAd"),msg=$("postMessage");
+   if(btn)btn.disabled=true;
+   msg.textContent="Submitting your ad…";
+   try{
+     const [appSdk,authSdk,fsSdk]=await Promise.all([
+       import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"),
+       import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"),
+       import("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js")
+     ]);
+     const app=appSdk.getApps().length?appSdk.getApp():appSdk.initializeApp(cfg);
+     const auth=authSdk.getAuth(app);
+     let user=auth.currentUser;
+     if(!user) user=await new Promise(resolve=>{
+       let done=false,unsub=()=>{};
+       const finish=u=>{if(done)return;done=true;unsub();resolve(u||null)};
+       unsub=authSdk.onAuthStateChanged(auth,finish,()=>finish(null));
+     });
+     if(!user){msg.textContent="Please log in first. After login, open Post Ad again.";openLogin();return;}
+     const title=$("adTitle").value.trim(),category=$("adCategory").value,city=$("adCity").value.trim(),country=$("adCountry").value,description=$("adDescription").value.trim();
+     if(!title||!category||!city||!country||!description){msg.textContent="Please fill in all required fields: title, category, country, city and description.";return;}
+     const raw=$("adPrice").value;
+     const ad={
+       title,category,sub:$("adSubcategory").value,city,area:$("adArea").value.trim(),country,
+       price:raw===""?null:Number(raw),phone:$("adPhone").value.trim(),
+       desc:description,description,imageUrl:$("adImage").value.trim(),
+       ownerUid:user.uid,ownerEmail:user.email||"",status:"pending",
+       createdAt:fsSdk.serverTimestamp()
+     };
+     await fsSdk.addDoc(fsSdk.collection(fsSdk.getFirestore(app),"ads"),ad);
+     msg.textContent="Success! Your ad was submitted for admin review.";
+     form.reset();
+     const countrySel=$("adCountry"),citySel=$("adCity");
+     if(countrySel)countrySel.value="Saudi Arabia";
+     if(citySel){citySel.innerHTML='<option value="">Choose city</option>';citySel.disabled=true;}
+     setTimeout(()=>{$("postOverlay")?.classList.remove("show");},1500);
+   }catch(err){
+     console.error("ExpatSouq post error:",err);
+     const code=err?.code||"";
+     msg.textContent=code==="permission-denied"
+       ?"Posting was blocked by Firestore security rules. The database rules need to allow signed-in users to create pending ads."
+       :code==="unauthenticated"?"Your login expired. Log in again and retry."
+       :"Could not post the ad ("+(code||err?.message||"unknown error")+"). Please send me a screenshot of this message.";
+   }finally{if(btn)btn.disabled=false;}
+ },true);
+})();
+</script>
+
+<script id="categoryDropdownFix">
+(()=> {
+ const categories=[{"name":"Jobs","subs":["Job Seekers","Temp Jobs"]},{"name":"Items For Sale","subs":["Air Conditioners","Appliances","Auto Parts","Baby & Kid Stuff","Bicycles","Boats","Books","Clothing & Accessories","Collectibles","Computers","Electrical & Plumbing","Electronics","Farm & Garden","Food","Free Items","Furniture","Health & Beauty Items","Heavy Equipment","Home Audio","Household Items","Industrial Machinery","Jewelry","Machinery","Materials","Mobile Phones","Motorcycles","Musical Instruments","Perfumes & Fragrances","Pet Supplies","Photo & Video","Purses & Wallets","RC Hobby","Software","Sporting Goods","Tablet Computers","Tickets","Tools","Toys & Games","Vehicle Lease Transfer","Vehicles, Cars & Trucks","Video Games","Watches","Items Wanted"]},{"name":"Learning","subs":["Language Exchange","Lessons Offered","Lessons Wanted"]},{"name":"Housing","subs":["Apartments, Flats, Houses & Villas","Bedspace For Rent","Holiday/Vacation Rentals","Housing Exchanges","Real Estate For Sale","Rooms for Rent","Staff Accommodation","Sublets","Villas"]},{"name":"Commercial Property","subs":["Buildings","Commercial Villas","Factories","Offices","Shops","Warehouses"]},{"name":"Plots","subs":["Agricultural Land","Commercial Plots","Industrial Land","Residential Plots"]},{"name":"Housing Wanted","subs":["Apts/Flats Wanted","Bedspace Wanted","Real Estate Wanted","Roommates","Short-term Wanted"]},{"name":"Childcare","subs":["Childcare Job Seekers","Childcare Jobs","Daycare"]},{"name":"Community","subs":["Artists","Events","General","Guest Posting","Help","Local News","Lost & Found","Musicians","Mutual Permit Transfers","Pet Adoption","Pick Up & Drop Off","Rideshare","Sports Partners"]},{"name":"Business (B2B)","subs":["Business For Sale","Business Opportunities","Commercial Services","Franchise"]},{"name":"Services","subs":["Accounting","Air Conditioning","Appliance Repair","Automotive","Babysitting","Beauty","Carpentry","Catering","Cleaning","Computer Repair","Construction","Consulting","Courier","Delivery","Design","Education","Electrical","Event Planning","Financial","Fitness","Gardening","Graphic Design","Handyman","Healthcare","Home Improvement","IT Services","Insurance","Interior Design","Internet","Laundry","Legal","Logistics","Manpower","Marketing","Medical","Mobile Apps","Passenger Transport","Pest Control","Pet Sitting","Photography","Printing","Real Estate","Recycling","Relocation","Restaurants","Satellite","Security","Software Development","Tailoring","Tax Preparation","Technical","Television","Training","Translation","Travel","Web Design & Development","Writing"]},{"name":"Popular Requests","subs":["Job Seekers","Items Wanted","Housing Wanted","Roommates","Lessons Wanted"]}];
+ const safe=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const init=()=>{
+   const main=document.getElementById("adCategory"),sub=document.getElementById("adSubcategory");
+   if(!main||!sub)return;
+   const selected=main.value;
+   main.innerHTML='<option value="">Choose category</option>'+categories.map(c=>'<option value="'+safe(c.name)+'">'+safe(c.name)+'</option>').join("");
+   if(categories.some(c=>c.name===selected))main.value=selected;
+   const update=()=>{
+     const c=categories.find(x=>x.name===main.value);
+     sub.innerHTML='<option value="">Choose subcategory (optional)</option>'+(c?c.subs.map(x=>'<option value="'+safe(x)+'">'+safe(x)+'</option>').join(""):"");
+   };
+   if(!main.dataset.categoryFixBound){main.addEventListener("change",update);main.dataset.categoryFixBound="1";}
+   update();
+ };
+ init();
+})();
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
+
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+// Country -> city -> area/locality selectors. Country/city lists are loaded from a public geographic dataset.
+const fallbackCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China","Colombia","Comoros","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","DR Congo","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Republic of the Congo","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+let geographicData = [];
+const saudiAreas = {
+"Riyadh":["Al Olaya","Al Malaz","Al Sulai","Al Naseem","Al Murabba","Al Wurud","Al Yasmin","Al Narjis","Al Munsiyah","Al Rabwah","Al Rawdah","Al Shifa","Al Aziziyah","Al Batha","Al Nakheel","Al Hamra","Qurtubah","Hittin","Al Aqiq","King Fahd District"],
+"Jeddah":["Al Balad","Al Hamra","Al Rawdah","Al Salamah","Al Safa","Al Marwah","Al Naseem","Al Rehab","Al Aziziyah","Obhur","Al Zahra"],
+"Dammam":["Al Faisaliyah","Al Adamah","Al Badiyah","Al Shati","Al Rakah","Al Mazruiyah","Al Qusur"],
+"Khobar":["Al Aqrabiyah","Al Ulaya","Al Thuqbah","Corniche","Al Bandariyah"],
+"Mecca":["Al Aziziyah","Al Shوقية","Al Awali","Al Naseem","Al Misfalah"],
+"Medina":["Qurban","Al Awali","Al Aziziyah","Al Iskan","Al Jamawat"],
+"Taif":["Shahar","Al Faisaliyah","Qurwa","Al Qutbiyyah"],
+"Jubail":["Al Balad","Al Fanateer","Al Huwailat","Jalmudah"],
+"Abha":["Al Mansak","Al Muftaha","Al Shifa"],
+"Tabuk":["Al Ulaya","Al Muruj","Al Faisaliyah"]
+};
+const areaSuggestions = {
+"Dubai":["Al Barsha","Business Bay","Deira","Downtown Dubai","Dubai Marina","International City","Jumeirah","Karama","Mirdif","Silicon Oasis"],
+"Abu Dhabi":["Al Khalidiyah","Al Reem Island","Khalifa City","Mussafah","Tourist Club Area"],
+"Doha":["Al Sadd","West Bay","The Pearl","Old Airport","Al Wakrah","Al Rayyan"],
+"Manama":["Juffair","Seef","Adliya","Hoora","Riffa"],
+"Dhaka":["Dhanmondi","Gulshan","Uttara","Mirpur","Banani","Mohammadpur","Motijheel"],
+"Chittagong":["Agrabad","Panchlaish","Khulshi","Nasirabad"],
+"Karachi":["Clifton","Defence","Gulshan-e-Iqbal","North Nazimabad","Saddar"],
+"Lahore":["DHA","Gulberg","Johar Town","Model Town"],
+"London":["Camden","Chelsea","Croydon","Greenwich","Islington","Westminster"],
+"New York":["Brooklyn","Bronx","Manhattan","Queens","Staten Island"]
+};
+function fillSelect(el,items,firstLabel){if(!el)return;el.innerHTML="";const first=document.createElement("option");first.value="";first.textContent=firstLabel;el.appendChild(first);items.forEach(item=>{const op=document.createElement("option");op.value=typeof item==="string"?item:(item.name||item.city||"");op.textContent=typeof item==="string"?item:(item.name||item.city||"");el.appendChild(op)})}
+function getCities(country){const entry=geographicData.find(x=>(x.country||x.name||"").toLowerCase()===String(country||"").toLowerCase());return entry&&Array.isArray(entry.cities)?entry.cities.filter(Boolean).sort((a,b)=>a.localeCompare(b)):[]}
+function refreshAreaOptions(city,searchMode){const datalist=document.getElementById(searchMode?"searchAreaOptions":"postAreaOptions");if(!datalist)return;datalist.innerHTML="";const choices=saudiAreas[city]||areaSuggestions[city]||[];choices.forEach(name=>{const op=document.createElement("option");op.value=name;datalist.appendChild(op)})}
+function setCityOptions(country,searchMode){const cityEl=document.getElementById(searchMode?"location":"adCity");if(!cityEl)return;const cities=getCities(country);fillSelect(cityEl,cities,searchMode?"All cities":(country?"Choose city":"Choose country first"));cityEl.disabled=!country||!cities.length;if(country&&!cities.length){cityEl.disabled=false;cityEl.innerHTML='<option value="">City list unavailable — type below</option>'}const area=document.getElementById(searchMode?"area":"adArea");if(area)area.value="";refreshAreaOptions("",searchMode)}
+async function loadGeography(){const searchCountry=document.getElementById("country"),postCountry=document.getElementById("adCountry");try{const res=await fetch("https://countriesnow.space/api/v0.1/countries");if(!res.ok)throw new Error("Country list unavailable");const data=await res.json();if(!data.error&&Array.isArray(data.data))geographicData=data.data.filter(x=>x&&x.country).map(x=>({country:x.country,cities:Array.isArray(x.cities)?x.cities:[]}));}catch(e){console.warn("Geography API unavailable; using country fallback",e)}const names=[...new Set([...(geographicData.map(x=>x.country)),...fallbackCountries])].sort((a,b)=>a.localeCompare(b));fillSelect(searchCountry,names,"All countries");fillSelect(postCountry,names,"Choose country");if(names.includes("Saudi Arabia")){searchCountry.value="";postCountry.value="Saudi Arabia"}setCityOptions("",true);setCityOptions(postCountry.value,false)}
+document.getElementById("country").addEventListener("change",e=>{setCityOptions(e.target.value,true)});
+document.getElementById("location").addEventListener("change",e=>refreshAreaOptions(e.target.value,true));
+document.getElementById("adCountry").addEventListener("change",e=>setCityOptions(e.target.value,false));
+document.getElementById("adCity").addEventListener("change",e=>refreshAreaOptions(e.target.value,false));
+loadGeography();
+
+const categories=[
+{name:"Jobs",icon:"💼",subs:["Job Seekers","Temp Jobs"]},
+{name:"Items For Sale",icon:"🛍️",subs:["Air Conditioners","Appliances","Auto Parts","Baby & Kid Stuff","Bicycles","Boats","Books","Clothing & Accessories","Collectibles","Computers","Electrical & Plumbing","Electronics","Farm & Garden","Food","Free Items","Furniture","Health & Beauty Items","Heavy Equipment","Home Audio","Household Items","Industrial Machinery","Jewelry","Machinery","Materials","Mobile Phones","Motorcycles","Musical Instruments","Perfumes & Fragrances","Pet Supplies","Photo & Video","Purses & Wallets","RC Hobby","Software","Sporting Goods","Tablet Computers","Tickets","Tools","Toys & Games","Vehicle Lease Transfer","Vehicles, Cars & Trucks","Video Games","Watches","Items Wanted"]},
+{name:"Learning",icon:"📚",subs:["Language Exchange","Lessons Offered","Lessons Wanted"]},
+{name:"Housing",icon:"🏠",subs:["Apartments, Flats, Houses & Villas","Bedspace For Rent","Holiday/Vacation Rentals","Housing Exchanges","Real Estate For Sale","Rooms for Rent","Staff Accommodation","Sublets","Villas"]},
+{name:"Commercial Property",icon:"🏢",subs:["Buildings","Commercial Villas","Factories","Offices","Shops","Warehouses"]},
+{name:"Plots",icon:"🌳",subs:["Agricultural Land","Commercial Plots","Industrial Land","Residential Plots"]},
+{name:"Housing Wanted",icon:"🔎",subs:["Apts/Flats Wanted","Bedspace Wanted","Real Estate Wanted","Roommates","Short-term Wanted"]},
+{name:"Childcare",icon:"🧸",subs:["Childcare Job Seekers","Childcare Jobs","Daycare"]},
+{name:"Community",icon:"🌐",subs:["Artists","Events","General","Guest Posting","Help","Local News","Lost & Found","Musicians","Mutual Permit Transfers","Pet Adoption","Pick Up & Drop Off","Rideshare","Sports Partners"]},
+{name:"Business (B2B)",icon:"🤝",subs:["Business Lease Transfer","Business Partners","Businesses For Sale","Wholesale Products"]},
+{name:"Services",icon:"🛠️",subs:["Accounting","Air Conditioning","Appliance Repair","Automotive","Beautician","Business","Career Counseling","Cargo","Catering","Cleaning","Computer","Construction","Counseling","Creative","Delivery","Dental","Education","Elder Care","ERP","Event Planning","Farm/Garden","Fashion & Design","Financial","Florist","Food & Drink","Food Delivery","Graphic Design","Guides/Interpreters","Health","Household","Immigration","Interior Design","Labor/Moving","Legal","Logistics","Manpower","Marketing","Medical","Mobile Apps","Passenger Transport","Pest Control","Pet Sitting","Photography","Printing","Real Estate","Recycling","Relocation","Restaurants","Satellite","Security","Software Development","Tailoring","Tax Preparation","Technical","Television","Training","Translation","Travel","Web Design & Development","Writing"]},
+{name:"Popular Requests",icon:"📌",subs:["Job Seekers","Items Wanted","Housing Wanted","Roommates","Lessons Wanted"]}
+];
+const places=["Bahrain","Riyadh","Jeddah","Dammam","Dubai","Hyderabad","Amman","Amsterdam","Athens","Beijing","Brussels","Cairo","Doha","Geneva","Ho Chi Minh City","Jakarta","Jubail","Karachi","Kuala Lumpur","Kuwait","Manila","Muscat","Singapore"];
+const popularLocations=document.getElementById("popularLocations");
+if(popularLocations)popularLocations.innerHTML=places.map(x=>'<a href="#ads" data-place="'+x+'">'+x+'</a>').join("");
+const regionData=[["Africa","Cairo · Nairobi · Cape Town"],["Asia","Riyadh · Dubai · Doha · Karachi · Dhaka"],["Australia & Oceania","Sydney · Melbourne · Auckland"],["Europe","Amsterdam · Athens · Brussels · Geneva"],["Latin America & Caribbean","São Paulo · Mexico City · Panama City"],["North America","New York · Toronto · Los Angeles"]];
+const regions=document.getElementById("regions");
+if(regions)regions.innerHTML=regionData.map(([n,p])=>'<details><summary>'+n+' ▾</summary><p>'+p+'</p></details>').join("");
+const categoryGrid=document.getElementById("categoryGrid");
+categoryGrid.innerHTML=categories.map((c,i)=>'<article class="catgroup"><h3><span>'+c.icon+'</span> <a href="#ads" data-category="'+c.name+'">'+c.name+'</a></h3><div class="catlist">'+c.subs.slice(0,7).map(s=>'<a class="catlink" href="#ads" data-category="'+s+'">'+s+'</a>').join("")+'</div>'+(c.subs.length>7?'<a class="more" href="#ads" data-expand="'+i+'">View all '+c.subs.length+' subcategories ↓</a>':"")+'</article>').join("");
+const popular=[["Dubai Jobs","Dubai","Jobs"],["Jobs in Kuwait","Kuwait","Jobs"],["Jobs in Qatar","Qatar","Jobs"],["Jobs in Oman","Oman","Jobs"],["Sharjah Jobs","Sharjah","Jobs"],["Abu Dhabi Jobs","Abu Dhabi","Jobs"],["Kuwait Flats for Rent","Kuwait","Housing"],["Dubai Apartments for Rent","Dubai","Housing"],["Bed Space in Dubai","Dubai","Housing"],["Rooms in Doha","Doha","Housing"],["Business for Sale Dubai","Dubai","Business (B2B)"],["Plots for Sale Dubai","Dubai","Plots"]];
+document.getElementById("popularSearches").innerHTML=popular.map(([label,loc,cat])=>'<a href="#ads" data-pop="'+loc+'" data-category="'+cat+'">› '+label+'</a>').join("");
+const samples=[
+{title:"Furnished apartment for rent",category:"Housing",sub:"Apartments, Flats, Houses & Villas",city:"Riyadh",country:"Saudi Arabia",price:"2500",unit:"/ month",icon:"🏠",desc:"Sample listing preview. Confirm availability and details with the advertiser."},
+{title:"Toyota Corolla — clean condition",category:"Items For Sale",sub:"Vehicles, Cars & Trucks",city:"Jeddah",country:"Saudi Arabia",price:"28000",icon:"🚗",desc:"Sample vehicle ad. Check the vehicle and paperwork before purchase."},
+{title:"Smartphone in excellent condition",category:"Items For Sale",sub:"Mobile Phones",city:"Dammam",country:"Saudi Arabia",price:"1200",icon:"📱",desc:"Sample electronics ad."},
+{title:"Graphic designer — full time",category:"Jobs",sub:"Jobs",city:"Riyadh",country:"Saudi Arabia",price:"4000",unit:"/ month",icon:"💼",desc:"Sample job listing. Verify employer and contract."},
+{title:"Modern sofa set",category:"Items For Sale",sub:"Furniture",city:"Khobar",country:"Saudi Arabia",price:"650",icon:"🛋️",desc:"Sample furniture listing."},
+{title:"Home cleaning service",category:"Services",sub:"Cleaning",city:"Makkah",country:"Saudi Arabia",price:"80",unit:" starting",icon:"🧹",desc:"Sample service listing."},
+{title:"Room available for rent",category:"Housing",sub:"Rooms for Rent",city:"Jubail",country:"Saudi Arabia",price:"900",unit:"/ month",icon:"🛏️",desc:"Sample room listing."},
+{title:"Laptop for sale",category:"Items For Sale",sub:"Computers",city:"Riyadh",country:"Saudi Arabia",price:"1500",icon:"💻",desc:"Sample laptop listing."},
+{title:"Arabic and English lessons",category:"Learning",sub:"Lessons Offered",city:"Jeddah",country:"Saudi Arabia",price:"100",icon:"📖",desc:"Sample learning listing."}
+];
+let liveAds=[],activeCategory="",activePlace="",currentUser=null;
+const adGrid=document.getElementById("adGrid"),noResults=document.getElementById("noResults");
+function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderAds(){const term=document.getElementById("query").value.trim().toLowerCase(),loc=document.getElementById("location").value,country=document.getElementById("country").value,area=document.getElementById("area").value.trim().toLowerCase();const all=[...liveAds,...samples];const filtered=all.filter(a=>(!term||[a.title,a.category,a.sub,a.city,a.country,a.desc].join(" ").toLowerCase().includes(term))&&(!loc||String(a.city||"").toLowerCase()===loc.toLowerCase())&&(!country||String(a.country||"").toLowerCase()===country.toLowerCase())&&(!area||String(a.area||"").toLowerCase().includes(area))&&(!activePlace||String(a.city||"").toLowerCase().includes(activePlace.toLowerCase())||String(a.country||"").toLowerCase().includes(activePlace.toLowerCase()))&&(!activeCategory||[a.category,a.sub].some(x=>String(x||"").toLowerCase()===activeCategory.toLowerCase())||String(a.category||"").toLowerCase().includes(activeCategory.toLowerCase())));adGrid.innerHTML=filtered.map(a=>'<article class="adcard"><div class="advisual">'+(a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌"))+'</div><div class="adbody"><span class="tag">'+safe(a.sub||a.category||"CLASSIFIED")+'</span><h3>'+safe(a.title)+'</h3><div class="price">'+(a.price!==null&&a.price!==undefined&&a.price!==""?"SAR "+safe(a.price)+(a.unit||""):"Contact advertiser")+'</div><div class="admeta">📍 '+safe(a.city||"Location not specified")+(a.area?", "+safe(a.area):"")+(a.country?", "+safe(a.country):"")+'</div><p class="admeta">'+safe(a.desc||a.description||"")+'</p><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div></div></article>').join("");noResults.style.display=filtered.length?"none":"block";document.getElementById("adSub").textContent=filtered.length+" listings shown · sample previews and approved community ads"}
+document.getElementById("searchForm").addEventListener("submit",e=>{e.preventDefault();activeCategory="";activePlace="";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})});
+document.getElementById("resetFilter").onclick=document.getElementById("clearSearch").onclick=()=>{document.getElementById("query").value="";document.getElementById("location").value="";document.getElementById("country").value="";document.getElementById("area").value="";activeCategory="";activePlace="";renderAds()};
+document.addEventListener("click",e=>{const cat=e.target.closest("[data-category]");if(cat){e.preventDefault();activeCategory=cat.dataset.category;activePlace="";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})}const pl=e.target.closest("[data-place]");if(pl){e.preventDefault();activePlace=pl.dataset.place;document.getElementById("location").value=["Riyadh","Jeddah","Dammam","Jubail","Dubai","Doha"].includes(activePlace)?activePlace:"";renderAds();document.getElementById("ads").scrollIntoView({behavior:"smooth"})}const pop=e.target.closest("[data-pop]");if(pop){activePlace=pop.dataset.pop;document.getElementById("location").value="";renderAds()}const ex=e.target.closest("[data-expand]");if(ex){e.preventDefault();const c=categories[Number(ex.dataset.expand)];const parent=ex.closest(".catgroup");parent.querySelector(".catlist").innerHTML=c.subs.map(s=>'<a class="catlink" href="#ads" data-category="'+safe(s)+'">'+safe(s)+'</a>').join("");ex.remove()}});
+const authOverlay=document.getElementById("authOverlay"),postOverlay=document.getElementById("postOverlay"),authForm=document.getElementById("authForm"),authMessage=document.getElementById("authMessage"),postMessage=document.getElementById("postMessage");let authMode="login";
+function openAuth(mode="login"){authOverlay.classList.add("show");setAuthMode(mode);authMessage.textContent=""}
+function closeAuth(){authOverlay.classList.remove("show")}
+function setAuthMode(mode){authMode=mode;const reg=mode==="register";document.getElementById("loginTab").classList.toggle("active",!reg);document.getElementById("registerTab").classList.toggle("active",reg);document.getElementById("confirmField").hidden=!reg;document.getElementById("confirmPassword").required=reg;document.getElementById("authTitle").textContent=reg?"Create your account":"Welcome back";document.getElementById("authIntro").textContent=reg?"Join the ExpatSouq community.":"Log in to manage your ads.";document.getElementById("authSubmit").textContent=reg?"Create account":"Log in";document.getElementById("forgotBtn").hidden=reg}
+document.getElementById("loginBtn").onclick=()=>openAuth("login");document.getElementById("loginTab").onclick=()=>setAuthMode("login");document.getElementById("registerTab").onclick=()=>setAuthMode("register");document.getElementById("closeAuth").onclick=closeAuth;authOverlay.addEventListener("click",e=>{if(e.target===authOverlay)closeAuth()});
+function friendly(e){const c=e?.code||"";return ({"auth/email-already-in-use":"This email already has an account. Please log in.","auth/invalid-email":"Enter a valid email address.","auth/weak-password":"Use a stronger password with at least 6 characters.","auth/invalid-credential":"Incorrect email or password.","auth/user-not-found":"No account found. Please create an account.","auth/too-many-requests":"Too many attempts. Please wait and retry.","auth/network-request-failed":"Network issue. Check your internet connection.","auth/operation-not-allowed":"Enable Email/Password sign-in in Firebase Authentication.","auth/unauthorized-domain":"Add this website domain to Firebase Authentication authorized domains."})[c]||("Could not complete the request ("+c+"). Check Firebase settings and try again.")}
+authForm.addEventListener("submit",async e=>{e.preventDefault();const btn=document.getElementById("authSubmit");btn.disabled=true;authMessage.textContent="Please wait…";try{const em=document.getElementById("email").value.trim(),pw=document.getElementById("password").value;if(authMode==="register"){if(pw!==document.getElementById("confirmPassword").value)throw new Error("Passwords do not match.");const cred=await createUserWithEmailAndPassword(auth,em,pw);try{await sendEmailVerification(cred.user);authMessage.textContent="Account created. Verification email sent to "+em+". Please verify your email, then log in."}catch{authMessage.textContent="Account created. You can now log in."}await signOut(auth);authForm.reset()}else{await signInWithEmailAndPassword(auth,em,pw);authMessage.textContent="Login successful.";setTimeout(closeAuth,700)}}catch(e){authMessage.textContent=e.message&&!e.code?e.message:friendly(e)}finally{btn.disabled=false}});
+document.getElementById("forgotBtn").onclick=async()=>{const em=document.getElementById("email").value.trim();if(!em){authMessage.textContent="Enter your email above first.";return}try{await sendPasswordResetEmail(auth,em);authMessage.textContent="Password reset email sent. Check inbox and spam."}catch(e){authMessage.textContent=friendly(e)}};
+function openPost(){if(!currentUser){openAuth("login");authMessage.textContent="Log in first to post an ad.";return}postOverlay.classList.add("show");postMessage.textContent=""}
+function closePost(){postOverlay.classList.remove("show")}
+document.getElementById("postBtn").onclick=document.getElementById("bannerPost").onclick=openPost;document.getElementById("closePost").onclick=closePost;postOverlay.addEventListener("click",e=>{if(e.target===postOverlay)closePost()});
+const mainCat=document.getElementById("adCategory"),subCat=document.getElementById("adSubcategory");mainCat.innerHTML='<option value="">Choose category</option>'+categories.map(c=>'<option>'+safe(c.name)+'</option>').join("");
+mainCat.addEventListener("change",()=>{const c=categories.find(x=>x.name===mainCat.value);subCat.innerHTML='<option value="">Choose subcategory (optional)</option>'+(c?c.subs.map(s=>'<option>'+safe(s)+'</option>').join(""):"")});
+document.getElementById("postForm").addEventListener("submit",async e=>{e.preventDefault();if(!currentUser){postMessage.textContent="Please log in first.";return}const btn=document.getElementById("submitAd");btn.disabled=true;postMessage.textContent="Submitting…";try{const raw=document.getElementById("adPrice").value;const ad={title:document.getElementById("adTitle").value.trim(),category:mainCat.value,sub:subCat.value,city:document.getElementById("adCity").value.trim(),area:document.getElementById("adArea").value.trim(),country:document.getElementById("adCountry").value,price:raw===""?null:Number(raw),phone:document.getElementById("adPhone").value.trim(),desc:document.getElementById("adDescription").value.trim(),description:document.getElementById("adDescription").value.trim(),imageUrl:document.getElementById("adImage").value.trim(),ownerUid:currentUser.uid,ownerEmail:currentUser.email,status:"pending",createdAt:serverTimestamp()};await addDoc(collection(db,"ads"),ad);postMessage.textContent="Your ad was submitted for admin review.";document.getElementById("postForm").reset();setCityOptions(document.getElementById("adCountry").value,false);setTimeout(closePost,1400)}catch(e){console.error(e);postMessage.textContent=e.code==="permission-denied"?"Firestore rules blocked this ad. Update Firestore rules to allow signed-in users to submit pending ads.":"Could not submit ad. Check Firebase Firestore and try again ("+(e.code||e.message)+")."}finally{btn.disabled=false}});
+document.getElementById("myAdsBtn").onclick=async()=>{if(!currentUser){openAuth("login");authMessage.textContent="Log in to view your own ads.";return}activeCategory="";activePlace="";document.getElementById("query").value="";document.getElementById("adSub").textContent="Your ads only · all statuses";adGrid.innerHTML='<div class="panel">Loading your ads…</div>';noResults.style.display="none";document.getElementById("ads").scrollIntoView({behavior:"smooth"});try{const snap=await getDocs(query(collection(db,"ads"),where("ownerUid","==",currentUser.uid)));const mine=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{const ta=a.createdAt&&a.createdAt.toMillis?a.createdAt.toMillis():0;const tb=b.createdAt&&b.createdAt.toMillis?b.createdAt.toMillis():0;return tb-ta});if(!mine.length){adGrid.innerHTML='<div class="panel"><h3>No ads yet</h3><p>You have not posted any ads with this account. Choose “Post Ad” to create your first listing.</p></div>';document.getElementById("adSub").textContent="0 ads found for your account";return}adGrid.innerHTML=mine.map(a=>'<article class="adcard"><div class="advisual">'+(a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\\\'none\\\'">':safe(a.icon||"📌"))+'</div><div class="adbody"><span class="tag">MY AD · '+safe(a.status||"pending").toUpperCase()+'</span><h3>'+safe(a.title)+'</h3><div class="price">'+(a.price!==null&&a.price!==undefined&&a.price!==""?"SAR "+safe(a.price)+(a.unit||""):"Contact advertiser")+'</div><div class="admeta">📍 '+safe(a.city||"Location not specified")+(a.area?", "+safe(a.area):"")+(a.country?", "+safe(a.country):"")+'</div><p class="admeta">'+safe(a.desc||a.description||"")+'</p><div class="admeta">Category: '+safe(a.sub||a.category||"Classified")+'</div><div class="admeta">Status: '+safe(a.status||"pending")+'</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" type="button" data-edit-ad="'+safe(a.id)+'">Edit</button><button class="btn" type="button" data-delete-ad="'+safe(a.id)+'">Delete</button></div></div></article>').join("");document.getElementById("adSub").textContent=mine.length+" of your ads · pending and approved listings"}catch(e){console.error("Could not load own ads",e);adGrid.innerHTML='<div class="panel"><h3>Could not load your ads</h3><p>Firestore did not allow this account to read its own ads. Check the Firestore rules for ownerUid access.</p><p class="message">'+safe(e.code||e.message||"Unknown error")+'</p></div>';document.getElementById("adSub").textContent="Could not load your ads"}};
+
+adGrid.addEventListener("click",async e=>{
+ const edit=e.target.closest("[data-edit-ad]"),del=e.target.closest("[data-delete-ad]");
+ if(!edit&&!del)return;
+ if(!currentUser){openAuth("login");return}
+ const id=edit?edit.dataset.editAd:del.dataset.deleteAd;
+ try{
+  const ref=doc(db,"ads",id),snap=await getDoc(ref);
+  if(!snap.exists()||snap.data().ownerUid!==currentUser.uid){alert("You can only manage your own ads.");return}
+  const ad=snap.data();
+  if(del){
+   if(!confirm("Delete this ad permanently?"))return;
+   await deleteDoc(ref);
+   alert("Your ad was deleted.");
+   document.getElementById("myAdsBtn").click();
+   return;
+  }
+  const title=prompt("Ad title:",ad.title||"");if(title===null)return;if(!title.trim()){alert("Title cannot be empty.");return}
+  const priceText=prompt("Price in SAR (leave blank for contact advertiser):",ad.price??"");if(priceText===null)return;
+  const city=prompt("City:",ad.city||"");if(city===null)return;const area=prompt("Area / locality:",ad.area||"");if(area===null)return;
+  const desc=prompt("Description:",ad.desc||ad.description||"");if(desc===null)return;
+  const price=priceText.trim()===""?null:Number(priceText);
+  if(price!==null&&!Number.isFinite(price)){alert("Please enter a valid price.");return}
+  await updateDoc(ref,{title:title.trim(),price,city:city.trim(),area:area.trim(),desc:desc.trim(),updatedAt:serverTimestamp(),status:"pending"});
+  alert("Ad updated and sent for review again.");
+  document.getElementById("myAdsBtn").click();
+ }catch(err){console.error(err);alert("Could not manage this ad. Check Firestore rules and try again ("+(err.code||err.message)+").")}
+});
+
+document.getElementById("footerMyAds").onclick=e=>{e.preventDefault();if(!currentUser)openAuth();else document.getElementById("myAdsBtn").click()};
+document.getElementById("footerPost").onclick=e=>{e.preventDefault();document.getElementById("postBtn").click()};
+onAuthStateChanged(auth,user=>{currentUser=user;const nm=document.getElementById("userName"),lb=document.getElementById("loginBtn"),lo=document.getElementById("logoutBtn"),mb=document.getElementById("myAdsBtn");if(user){nm.hidden=false;nm.textContent=user.email;lb.hidden=true;lo.hidden=false;mb.hidden=false}else{nm.hidden=true;lb.hidden=false;lo.hidden=true;mb.hidden=true}});
+document.getElementById("logoutBtn").onclick=async()=>{await signOut(auth)};
+async function loadApproved(){try{const snap=await getDocs(query(collection(db,"ads"),where("status","==","approved")));liveAds=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));renderAds()}catch(e){console.warn("Could not load approved ads",e);renderAds()}}
+loadApproved();renderAds();
+
+async function loadPublicJobs(){
+ const grid=document.getElementById("jobGrid"),empty=document.getElementById("jobEmpty");
+ if(!grid||!empty)return;
+ try{
+  const snap=await getDocs(query(collection(db,"jobs"),where("status","==","approved")));
+  const jobs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));
+  if(!jobs.length){grid.innerHTML="";empty.style.display="block";return}
+  empty.style.display="none";
+  grid.innerHTML=jobs.map(j=>'<article class="adcard"><div class="advisual">💼</div><div class="adbody"><span class="tag">JOB LISTING</span><h3>'+safe(j.title||"Job opportunity")+'</h3><div class="price">'+safe(j.salary||"Salary not specified")+'</div><div class="admeta">🏢 '+safe(j.company||"Company not specified")+' · 📍 '+safe(j.city||"Saudi Arabia")+'</div><p class="admeta">'+safe(j.description||"")+'</p>'+(j.applyLink?'<a class="btn green" style="display:inline-block;margin-top:8px" href="'+safe(j.applyLink)+'" target="_blank" rel="noopener noreferrer">Apply now →</a>': '<div class="admeta">Contact employer for application details.</div>')+'</div></article>').join("");
+ }catch(err){console.warn("Could not load public job listings",err);grid.innerHTML='<div class="panel"><h3>Job listings temporarily unavailable</h3><p>Job listings will appear here after the database is configured.</p></div>'}
+}
+loadPublicJobs();
+
+</script><script type="module">
+import {getApps,getApp,initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore,doc,getDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const config={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
+const app=getApps().length?getApp():initializeApp(config),db=getFirestore(app);
+const escapeHtml=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+try{
+ const snap=await getDoc(doc(db,"siteConfig","home"));
+ if(snap.exists()){
+  const settings=snap.data();
+  if(typeof settings.tagline==="string")document.querySelector(".top .wrap span")?.replaceChildren(document.createTextNode(settings.tagline));
+  if(typeof settings.heroTitle==="string")document.querySelector(".hero h1")?.replaceChildren(document.createTextNode(settings.heroTitle));
+  if(typeof settings.heroText==="string")document.querySelector(".hero p")?.replaceChildren(document.createTextNode(settings.heroText));
+  if(typeof settings.supportEmail==="string"){const contact=[...document.querySelectorAll('a[href^="mailto:"]')].find(a=>a.textContent.includes("Contact Us"));if(contact)contact.href="mailto:"+settings.supportEmail}
+  if(Array.isArray(settings.categories)){
+   const grid=document.getElementById("categoryGrid"),select=document.getElementById("adCategory");
+   const categories=settings.categories.filter(c=>c&&typeof c.name==="string"&&typeof c.icon==="string"&&Array.isArray(c.subs));
+   if(grid)grid.innerHTML=categories.map(c=>'<article class="catgroup"><h3><span>'+escapeHtml(c.icon)+'</span> <a href="#ads" data-category="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</a></h3><div class="catlist">'+c.subs.map(s=>'<a class="catlink" href="#ads" data-category="'+escapeHtml(s)+'">'+escapeHtml(s)+'</a>').join("")+'</div></article>').join("");
+   if(select){const selected=select.value;select.innerHTML='<option value="">Choose category</option>'+categories.map(c=>'<option>'+escapeHtml(c.name)+'</option>').join("");if(categories.some(c=>c.name===selected))select.value=selected;const sub=document.getElementById("adSubcategory");select.addEventListener("change",()=>{if(sub){const category=categories.find(c=>c.name===select.value);sub.innerHTML='<option value="">Choose subcategory (optional)</option>'+(category?category.subs.map(name=>'<option>'+escapeHtml(name)+'</option>').join(""):"")}});select.dispatchEvent(new Event("change"))}
+  }
+  if(settings.showAds===false)document.getElementById("ads")?.setAttribute("hidden","");
+  if(settings.showJobs===false)document.getElementById("jobs")?.setAttribute("hidden","");
+  if(settings.allowPosting===false){for(const id of ["postBtn","bannerPost","footerPost"])document.getElementById(id)?.setAttribute("hidden","")}
+ }
+}catch(error){console.warn("Could not load homepage settings:",error)}
+</script></body></html>
