@@ -58,7 +58,7 @@ button,input,select,textarea{max-width:100%;min-width:0}
 <section class="section"><div class="wrap"><div class="banner"><div><h2>Have something to advertise?</h2><p>Sign in and post your classified ad on ExpatSouq.</p></div><button id="bannerPost" class="btn gold">Post a free ad</button></div></div></section>
 <section class="section" id="jobs"><div class="wrap"><div class="sectionhead"><div><h2>Latest Job Listings</h2><p>Browse opportunities by city, country or remote location. Job links are provided by the poster.</p></div><a class="btn" href="#jobs">Browse Jobs</a></div><div id="jobGrid" class="adlist"><div class="panel">Loading job listings…</div></div><div id="jobEmpty" class="empty">No job listings have been published yet.</div></div></section>
 </main>
-<footer><div class="wrap"><div class="footgrid"><div><a class="logo" style="color:white" href="#">⌂ Expat<b>Souq</b></a><p style="font-size:12px;max-width:350px;color:#d0e4d8">A community classifieds platform for expatriates to connect, buy, sell and find opportunities locally and worldwide.</p></div><div><h4>Platform</h4><a href="#ads">Browse Ads</a><a href="#categories">Categories</a><a href="#" id="footerMyAds">My Ads</a><a href="#postBtn" id="footerPost">Post an Ad</a></div><div><h4>Support</h4><a href="mailto:support@expatsouq.example">Contact Us</a><a href="#privacy">Privacy</a><a href="#terms">Terms of Use</a><a href="#advertising">Advertising</a></div></div><div class="copyright">© 2026 ExpatSouq. All rights reserved. Independent community classifieds platform.</div></div></footer>
+<footer><div class="wrap"><div class="footgrid"><div><a class="logo" style="color:white" href="#">⌂ Expat<b>Souq</b></a><p style="font-size:12px;max-width:350px;color:#d0e4d8">A community classifieds platform for expatriates to connect, buy, sell and find opportunities locally and worldwide.</p></div><div><h4>Platform</h4><a href="#ads">Browse Ads</a><a href="#categories">Categories</a><a href="#" id="footerMyAds">My Ads</a><a href="#postBtn" id="footerPost">Post an Ad</a></div><div><h4>Support</h4><a href="mailto:md0756404@gmail.com">Contact Us</a><a href="#privacy">Privacy</a><a href="#terms">Terms of Use</a><a href="#advertising">Advertising</a></div></div><div class="copyright">© 2026 ExpatSouq. All rights reserved. Independent community classifieds platform.</div></div></footer>
 <div class="overlay" id="authOverlay" role="dialog" aria-modal="true"><div class="dialog"><button class="close" id="closeAuth" aria-label="Close">×</button><a class="logo" href="#">⌂ Expat<b>Souq</b></a><h2 id="authTitle" style="margin-top:12px">Welcome back</h2><p id="authIntro">Log in to your account to manage your ads.</p><div class="tabs"><button id="loginTab" class="active">Log in</button><button id="registerTab">Create account</button></div><form id="authForm"><label class="field"><span>Email address</span><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label class="field"><span>Password</span><input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="At least 6 characters"></label><label class="field" id="confirmField" hidden><span>Confirm password</span><input id="confirmPassword" type="password" minlength="6" autocomplete="new-password"></label><button class="submit" id="authSubmit">Log in</button></form><button id="forgotBtn" class="btn" style="border:0;color:var(--green);padding-left:0">Forgot password?</button><div class="message" id="authMessage" role="status"></div></div></div>
 <div class="overlay" id="postOverlay" role="dialog" aria-modal="true"><div class="dialog"><button class="close" id="closePost" aria-label="Close">×</button><h2>Post a classified ad</h2><p>Fill in the details below. Your ad will be submitted for review.</p><form id="postForm"><div class="postgrid"><label class="field wide"><span>Ad title *</span><input id="adTitle" required maxlength="100" placeholder="What are you advertising?"></label><label class="field"><span>Main category *</span><select id="adCategory" required></select></label><label class="field"><span>Subcategory</span><select id="adSubcategory"><option value="">Select category first</option></select></label><label class="field"><span>Country *</span><select id="adCountry" required><option value="Saudi Arabia">Saudi Arabia</option></select></label><label class="field"><span>City *</span><select id="adCity" required disabled><option value="">Choose country first</option></select></label><label class="field"><span>Area / locality</span><input id="adArea" list="postAreaOptions" maxlength="120" placeholder="Choose or type an area"><datalist id="postAreaOptions"></datalist></label><label class="field"><span>Price (optional)</span><input id="adPrice" type="number" min="0" step="0.01" placeholder="e.g. 1500"></label><label class="field"><span>Phone / WhatsApp (optional)</span><input id="adPhone" type="tel" maxlength="30" placeholder="+966..."></label><label class="field wide"><span>Description *</span><textarea id="adDescription" required maxlength="3000" placeholder="Give useful details about your ad"></textarea></label><label class="field wide"><span>Photo URL (optional)</span><input id="adImage" type="url" placeholder="https://..."></label></div><p class="notice">Never share passwords, identity documents or banking details in an ad.</p><button class="submit" id="submitAd">Submit ad for review</button><div id="postMessage" class="message" role="status"></div></form></div></div>
 <script id="fallbackLoginFix">
@@ -254,14 +254,41 @@ const samples=[
 let liveAds=[],activeCategory="",activePlace="",currentUser=null;
 const adGrid=document.getElementById("adGrid"),noResults=document.getElementById("noResults");
 function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function normalizePrice(value) {
+  if (value === null || value === undefined || value === "" || String(value).trim().toLowerCase() === "null") return null;
+  const raw = String(value).replace(/[^0-9.\-]/g, "");
+  if (!raw) return null;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+function normalizeUnit(unit) {
+  if (unit === null || unit === undefined || String(unit).trim() === "" || String(unit).trim().toLowerCase() === "null") return "";
+  const raw = String(unit).trim();
+  if (raw === "/" || raw === "null") return "";
+  return raw.startsWith("/") ? raw : ` ${raw}`;
+}
+function cleanDisplayTitle(title, fallback = "Classified listing") {
+  let text = title === null || title === undefined ? "" : String(title).trim();
+  if (!text || text.toLowerCase() === "null") return fallback;
+  text = text.replace(/^\s*SAR\s*[-+]?\d[\d,\s.]*\s*(?:\/\s*(?:month|day|week|year|hr|hour|m|d|w|y)|\s*per\s*(?:month|day|week|year|hr|hour)|\s*null)?\s*[,\-–:;\s]*/i, "");
+  text = text.replace(/^\s*null\s*[,\-–:;\s]*/i, "");
+  text = text.replace(/\s{2,}/g, " ").trim();
+  return text || fallback;
+}
+function formatPrice(value, unit) {
+  const parsed = normalizePrice(value);
+  if (parsed === null) return "Contact advertiser";
+  return `SAR ${parsed.toLocaleString()}${normalizeUnit(unit)}`;
+}
 function renderAds(){
  const term=document.getElementById("query").value.trim().toLowerCase(),loc=document.getElementById("location").value,country=document.getElementById("country").value,area=document.getElementById("area").value.trim().toLowerCase();
  const all=[...liveAds,...samples];
  const filtered=all.filter(a=>(!term||[a.title,a.category,a.sub,a.city,a.country,a.desc].join(" ").toLowerCase().includes(term))&&(!loc||String(a.city||"").toLowerCase()===loc.toLowerCase())&&(!country||String(a.country||"").toLowerCase()===country.toLowerCase())&&(!area||String(a.area||"").toLowerCase().includes(area))&&(!activePlace||String(a.city||"").toLowerCase().includes(activePlace.toLowerCase())||String(a.country||"").toLowerCase().includes(activePlace.toLowerCase()))&&(!activeCategory||[a.category,a.sub].some(x=>String(x||"").toLowerCase()===activeCategory.toLowerCase())||String(a.category||"").toLowerCase().includes(activeCategory.toLowerCase())));
  adGrid.innerHTML=filtered.map(a=>{
-  const title=safe(a.title),category=safe(a.sub||a.category||"CLASSIFIED");
+  const title=safe(cleanDisplayTitle(a.title, "Classified listing"));
+  const category=safe(a.sub||a.category||"CLASSIFIED");
   const place=[a.city,a.area,a.country].filter(Boolean).map(safe).join(", ")||"Location not specified";
-  const price=a.price!==null&&a.price!==undefined&&a.price!==""?"SAR "+safe(a.price)+(a.unit||""):"Contact advertiser";
+  const price=formatPrice(a.price, a.unit);
   const viewKey=adShareKey(a),viewCount=postViewCounts.get(viewKey);
   const viewMeta=a.id?'<div class="admeta" data-ad-view-count="'+safe(viewKey)+'">👁 '+(viewCount===undefined?"—":viewCount.toLocaleString())+' views</div>':"";
   const image=a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌");
@@ -362,10 +389,10 @@ function showAdDetails(ad,updateHistory=true){
  shareStatus.textContent="";
  shareLink.hidden=true;
  shareLink.value=location.href;
- const title=safe(ad.title||"Classified listing"),category=safe(ad.sub||ad.category||"Classified");
+ const title=safe(cleanDisplayTitle(ad.title, "Classified listing")),category=safe(ad.sub||ad.category||"Classified");
  const placeText=[ad.city,ad.area,ad.country].filter(Boolean).join(", ")||"Location not specified";
  const place=safe(placeText);
- const price=ad.price!==null&&ad.price!==undefined&&ad.price!==""?"SAR "+safe(ad.price)+(ad.unit||""):"Contact advertiser";
+ const price=formatPrice(ad.price, ad.unit);
  const description=safe(ad.desc||ad.description||"No description provided.");
  const phone=String(ad.phone||"").trim(),phoneDigits=phone.replace(/\D/g,"");
  let whatsappNumber=phoneDigits;
