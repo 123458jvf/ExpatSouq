@@ -292,7 +292,7 @@ function renderAds(){
   const viewKey=adShareKey(a),viewCount=postViewCounts.get(viewKey);
   const viewMeta=a.id?'<div class="admeta" data-ad-view-count="'+safe(viewKey)+'">👁 '+(viewCount===undefined?"—":viewCount.toLocaleString())+' views</div>':"";
   const image=a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌");
-  return '<article class="adcard"><div class="advisual">'+image+'</div><div class="adbody"><span class="tag">'+category+'</span><div class="listing-title-line"><h3>'+title+'</h3><span class="price">'+price+'</span></div><div class="admeta">📍 '+place+'</div><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div>'+viewMeta+'</div></article>';
+  return '<article class="adcard"><div class="advisual">'+image+'</div><div class="adbody"><span class="tag">'+category+'</span><div class="listing-title-line"><h3>'+title+'</h3><span class="price">'+price+'</span></div><div class="admeta">📍 '+place+'</div><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div>'+'</div></article>';
  }).join("");
  noResults.style.display=filtered.length?"none":"block";
  document.getElementById("adSub").textContent=filtered.length+" listings shown · sample previews and approved community ads";
