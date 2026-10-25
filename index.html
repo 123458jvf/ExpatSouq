@@ -473,7 +473,7 @@ detailsContent.addEventListener("click",event=>{
  document.getElementById("area").value="";
  activePlace="";
  activeCategory="";
- if(type==="place")activePlace=link.dataset.value;
+ activeScope="";if(type==="international")activeScope="international";if(type==="place")activePlace=link.dataset.value;
  if(type==="category")activeCategory=link.dataset.value;
  history.replaceState(null,"",location.pathname+location.search+(link.getAttribute("href")||"#ads"));
  closeAdDetails();
