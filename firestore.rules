@@ -1,0 +1,128 @@
+// Firestore Security Rules — ExpatSouq
+//
+// Deploy with: firebase deploy --only firestore:rules
+//
+// Admin role: a document exists at admins/{uid} or users/{uid}
+// with field role == "admin". Seed it with scripts/seed-admin.mjs.
+//
+// These rules deliberately PREVENT data loss:
+//   - Only admins can delete ads, jobs, users, siteConfig, siteAnalytics,
+//     postViewCounts.
+//   - Signed-in users can only create their OWN pending ads; they can never
+//     delete or modify other users' ads.
+//   - Public can only read approved ads and approved jobs.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Helper functions ----------
+
+    // True when the signed-in user holds an admin role document.
+    // get() reads the admin/user doc directly, so this works from any
+    // match block, not just the admins or users block.
+    function isAdmin() {
+      return (exists(/databases/$(database)/documents/admins/$(auth.uid))
+        && get(/databases/$(database)/documents/admins/$(auth.uid)).data.role == 'admin')
+        || (exists(/databases/$(database)/documents/users/$(auth.uid))
+        && get(/databases/$(database)/documents/users/$(auth.uid)).data.role == 'admin');
+    }
+
+    // True for a signed-in user creating their own ad.
+    function isOwnerAd(data) {
+      return request.auth != null
+        && data.ownerUid == request.auth.uid
+        && data.status == 'pending';
+    }
+
+    // ---------- Classified ads ----------
+
+    match /ads/{adId} {
+      // Public: read only approved ads.
+      allow read: if request.auth == null
+        ? resource.data.status == 'approved'
+        : resource.data.status == 'approved' || resource.data.ownerUid == request.auth.uid;
+
+      // Owner can create their own pending ad only.
+      allow create: if request.auth != null
+        && isOwnerAd(request.resource.data)
+        && request.resource.data.title is string
+        && request.resource.data.category is string
+        && request.resource.data.desc is string
+        && request.resource.data.createdAt is timestamp;
+
+      // Owner can update ONLY their own pending ad, keeping it pending,
+      // and cannot change status or ownerUid.
+      allow update: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid
+        && resource.data.status == 'pending'
+        && request.resource.data.status == 'pending'
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.updatedAt is timestamp;
+
+      // ONLY admins can update (approve/reject) or delete any ad.
+      allow update: if request.auth != null && isAdmin()
+        && request.resource.data.status in ['pending', 'approved', 'rejected']
+        && request.resource.data.ownerUid is string;
+      allow delete: if request.auth != null && isAdmin();
+    }
+
+    // ---------- Job listings ----------
+
+    match /jobs/{jobId} {
+      allow read: if request.auth == null
+        ? resource.data.status == 'approved'
+        : resource.data.status == 'approved' || resource.data.createdBy == request.auth.uid;
+      // ONLY admins may create, update or delete jobs.
+      allow create, update, delete: if request.auth != null && isAdmin();
+    }
+
+    // ---------- User profiles (read-only for admins) ----------
+
+    match /users/{userId} {
+      allow read, write: if request.auth != null && isAdmin();
+    }
+
+    // ---------- Admin role documents (self-seeded by the admin) ----------
+
+    match /admins/{userId} {
+      // Only an existing admin can read or write admin role docs.
+      // The very first admin must be seeded with the Admin SDK
+      // (scripts/seed-admin.mjs), which bypasses these rules.
+      allow read, write: if request.auth != null && isAdmin();
+    }
+
+    // ---------- Homepage configuration ----------
+
+    match /siteConfig/home {
+      allow read: if true;
+      allow write: if request.auth != null && isAdmin();
+    }
+
+    // ---------- Website analytics ----------
+    // Any signed-in visitor can create or increment the summary counter.
+    // Only admins may read it or delete it.
+
+    match /siteAnalytics/summary {
+      allow create: if request.auth != null
+        && request.resource.data.totalVisits is number
+        && request.resource.data.uniqueVisitors is number;
+      allow update: if request.auth != null
+        && request.resource.data.totalVisits is number
+        && request.resource.data.uniqueVisitors is number;
+      allow read: if request.auth != null && isAdmin();
+      allow delete: if request.auth != null && isAdmin();
+    }
+
+    // ---------- Per-post view counters ----------
+
+    match /postViewCounts/{adId} {
+      allow create: if request.auth != null
+        && request.resource.data.views is number;
+      allow read: if true;
+      allow update: if request.auth != null
+        && request.resource.data.views is number;
+      allow delete: if request.auth != null && isAdmin();
+    }
+  }
+}

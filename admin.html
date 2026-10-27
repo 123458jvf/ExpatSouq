@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ExpatSouq Admin</title>
+<link rel="icon" href="/favicon.svg">
+<style>
+:root{--green:#08634e;--deep:#073d31;--gold:#efa844;--line:#dce6df;--paper:#f6f8f6;--ink:#17251f;--muted:#64746b;--red:#a52222}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);font:15px/1.5 Arial,sans-serif;color:var(--ink)}.wrap{width:min(1100px,calc(100% - 24px));margin:24px auto}.head,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}.head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.logo{font-size:24px;font-weight:900;color:var(--green);text-decoration:none}.logo b{color:var(--gold)}h1{margin:4px 0;font-size:25px}h2{margin:0 0 12px}.muted{font-size:12px;color:var(--muted)}.field{display:block;margin:12px 0}.field span{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:7px;font:inherit}.field textarea{min-height:260px;font-family:Consolas,monospace}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.wide{grid-column:1/-1}.btn{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:8px;font-weight:700;cursor:pointer}.btn.green{background:var(--green);color:#fff;border-color:var(--green)}.btn.red{color:var(--red)}.btn:disabled{opacity:.55;cursor:wait}.tabs{display:flex;gap:8px;overflow:auto;margin:0 0 16px}.tab.active{background:var(--deep);color:#fff;border-color:var(--deep)}.panel[hidden]{display:none!important}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.stat{border:1px solid var(--line);border-radius:9px;padding:14px}.stat strong{display:block;font-size:24px;color:var(--green)}.row{padding:14px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.row h3{margin:0 0 4px;font-size:16px}.actions{display:flex;gap:7px;flex-wrap:wrap}.message{min-height:1.4em;color:var(--green);overflow-wrap:anywhere}.error{color:var(--red)}.badge{display:inline-block;background:#edf4ef;border-radius:99px;padding:3px 8px;font-size:11px}.check{display:flex;gap:8px;align-items:center;margin:12px 0}.check input{width:auto}.empty{padding:14px;border:1px dashed var(--line);border-radius:8px;color:var(--muted)}@media(max-width:650px){.wrap{margin:12px auto}.head,.panel{padding:15px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.field textarea{min-height:210px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <div><a class="logo" href="/">⌂ Expat<b>Souq</b></a><h1>Website Admin</h1><div id="signedInAs" class="muted"></div></div>
+    <button class="btn" id="logout" hidden>Log out</button>
+  </header>
+  <section class="panel" id="loginPanel">
+    <h2>Admin login</h2>
+    <form id="loginForm">
+      <label class="field"><span>Admin email</span><input id="email" type="email" required autocomplete="username"></label>
+      <label class="field"><span>Password</span><input id="password" type="password" required autocomplete="current-password"></label>
+      <button class="btn green" id="loginSubmit" type="submit">Log in</button>
+    </form>
+    <div id="loginMessage" class="message" role="status"></div>
+  </section>
+  <section id="adminPanel" hidden>
+    <nav class="tabs" aria-label="Admin sections">
+      <button class="btn tab active" data-tab="overview">Overview</button>
+      <button class="btn tab" data-tab="ads">Ads</button>
+      <button class="btn tab" data-tab="jobs">Jobs</button>
+      <button class="btn tab" data-tab="categories">Categories</button>
+      <button class="btn tab" data-tab="homepage">Homepage & settings</button>
+      <button class="btn tab" data-tab="users">Users</button>
+    </nav>
+    <section class="panel tab-panel" id="tab-overview">
+      <h2>Website overview</h2>
+      <div class="stats">
+        <div class="stat"><strong id="pendingCount">—</strong>Ads awaiting review</div>
+        <div class="stat"><strong id="approvedCount">—</strong>Approved ads</div>
+        <div class="stat"><strong id="jobCount">—</strong>Job listings</div>
+        <div class="stat"><strong id="userCount">—</strong>Users with ads</div>
+        <div class="stat"><strong id="totalVisitCount">—</strong>Total website visits</div>
+        <div class="stat"><strong id="uniqueVisitorCount">—</strong>Approx. unique browsers</div>
+        <div class="stat"><strong id="totalAdViewCount">—</strong>Total ad views</div>
+      </div>
+      <p class="muted">Unique visitors are estimated per browser/device. Browser storage resets and shared devices can affect this number.</p>
+      <p class="muted">Use the sections above to moderate ads, maintain jobs, update categories and edit homepage settings.</p>
+      <div id="overviewMessage" class="message" role="status"></div>
+    </section>
+    <section class="panel tab-panel" id="tab-ads" hidden>
+      <h2>Classified ad moderation</h2>
+      <label class="field"><span>Show ads</span><select id="adFilter"><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="all">All ads</option></select></label>
+      <div id="adsList"></div>
+      <div id="adsMessage" class="message" role="status"></div>
+    </section>
+    <section class="panel tab-panel" id="tab-jobs" hidden>
+      <h2>Manage job listings</h2>
+      <form id="jobForm">
+        <input type="hidden" id="jobId">
+        <div class="grid">
+          <label class="field"><span>Job title *</span><input id="title" required maxlength="140"></label>
+          <label class="field"><span>Company *</span><input id="company" required maxlength="140"></label>
+          <label class="field"><span>City *</span><input id="city" required maxlength="100"></label>
+          <label class="field"><span>Salary</span><input id="salary" maxlength="100"></label>
+          <label class="field wide"><span>Description *</span><textarea id="description" required maxlength="5000"></textarea></label>
+          <label class="field wide"><span>Apply link (optional; HTTPS only)</span><input id="applyLink" type="url" placeholder="https://…"></label>
+          <label class="field"><span>Publication status</span><select id="jobStatus"><option value="approved">Published</option><option value="draft">Draft</option></select></label>
+        </div>
+        <button class="btn green" id="saveJob" type="submit">Add job listing</button>
+        <button class="btn" id="cancelJob" type="button" hidden>Cancel edit</button>
+      </form>
+      <div id="jobsMessage" class="message" role="status"></div>
+      <div id="jobsList"></div>
+    </section>
+    <section class="panel tab-panel" id="tab-categories" hidden>
+      <h2>Manage categories</h2>
+      <p class="muted">Edit the full category list as JSON. Each entry needs a name, icon, and subs array. Existing ads are not changed when categories are edited.</p>
+      <label class="field"><span>Categories JSON</span><textarea id="categoriesJson" spellcheck="false"></textarea></label>
+      <button class="btn green" id="saveCategories">Save categories</button>
+      <div id="categoriesMessage" class="message" role="status"></div>
+    </section>
+    <section class="panel tab-panel" id="tab-homepage" hidden>
+      <h2>Homepage content and settings</h2>
+      <form id="settingsForm">
+        <div class="grid">
+          <label class="field"><span>Top banner text</span><input id="tagline" maxlength="160"></label>
+          <label class="field"><span>Homepage title</span><input id="heroTitle" maxlength="160"></label>
+          <label class="field wide"><span>Homepage description</span><textarea id="heroText" maxlength="500"></textarea></label>
+          <label class="field"><span>Support email</span><input id="supportEmail" type="email" maxlength="200"></label>
+        </div>
+        <label class="check"><input id="showAds" type="checkbox"> Show classified ads section</label>
+        <label class="check"><input id="showJobs" type="checkbox"> Show jobs section</label>
+        <label class="check"><input id="allowPosting" type="checkbox"> Allow users to submit ads</label>
+        <button class="btn green" type="submit">Save homepage settings</button>
+      </form>
+      <div id="settingsMessage" class="message" role="status"></div>
+    </section>
+    <section class="panel tab-panel" id="tab-users" hidden>
+      <h2>Users and their ads</h2>
+      <p class="muted">Read-only account overview assembled from existing user profiles and ad ownership. Account suspension and deletion are not available on the current free Firebase plan.</p>
+      <div id="usersList"></div>
+      <div id="usersMessage" class="message" role="status"></div>
+    </section>
+  </section>
+</main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,collection,addDoc,getDocs,doc,getDoc,setDoc,updateDoc,deleteDoc,query,orderBy,serverTimestamp,where} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
+// Admin role is determined by a Firestore document, not a hardcoded UID.
+// A user is an admin when a document exists at admins/{uid} (role:"admin")
+// or users/{uid} (role:"admin"). Seed the admin doc in Firestore before use.
+const ADMIN_DOC_PATHS=["admins","users"];
+async function isAdmin(user){
+  if(!user) return false;
+  for(const collection of ADMIN_DOC_PATHS){
+    try{
+      const snap=await getDoc(doc(db,collection,user.uid));
+      if(snap.exists()&&String(snap.data()?.role||"").toLowerCase()==="admin") return true;
+    }catch(err){console.warn("Could not read admin role from "+collection,err)}
+  }
+  return false;
+}
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+const DEFAULT_CATEGORIES=[
+ {name:"Jobs",icon:"💼",subs:["Job Seekers","Temp Jobs"]},
+ {name:"Items For Sale",icon:"🛍️",subs:["Air Conditioners","Appliances","Auto Parts","Baby & Kid Stuff","Bicycles","Boats","Books","Clothing & Accessories","Collectibles","Computers","Electrical & Plumbing","Electronics","Farm & Garden","Food","Free Items","Furniture","Health & Beauty Items","Heavy Equipment","Home Audio","Household Items","Industrial Machinery","Jewelry","Machinery","Materials","Mobile Phones","Motorcycles","Musical Instruments","Perfumes & Fragrances","Pet Supplies","Photo & Video","Purses & Wallets","RC Hobby","Software","Sporting Goods","Tablet Computers","Tickets","Tools","Toys & Games","Vehicle Lease Transfer","Vehicles, Cars & Trucks","Video Games","Watches","Items Wanted"]},
+ {name:"Learning",icon:"📚",subs:["Language Exchange","Lessons Offered","Lessons Wanted"]},
+ {name:"Housing",icon:"🏠",subs:["Apartments, Flats, Houses & Villas","Bedspace For Rent","Holiday/Vacation Rentals","Housing Exchanges","Real Estate For Sale","Rooms for Rent","Staff Accommodation","Sublets","Villas"]},
+ {name:"Commercial Property",icon:"🏢",subs:["Buildings","Commercial Villas","Factories","Offices","Shops","Warehouses"]},
+ {name:"Plots",icon:"🌳",subs:["Agricultural Land","Commercial Plots","Industrial Land","Residential Plots"]},
+ {name:"Housing Wanted",icon:"🔎",subs:["Apts/Flats Wanted","Bedspace Wanted","Real Estate Wanted","Roommates","Short-term Wanted"]},
+ {name:"Childcare",icon:"🧸",subs:["Childcare Job Seekers","Childcare Jobs","Daycare"]},
+ {name:"Community",icon:"🌐",subs:["Artists","Events","General","Guest Posting","Help","Local News","Lost & Found","Musicians","Mutual Permit Transfers","Pet Adoption","Pick Up & Drop Off","Rideshare","Sports Partners"]},
+ {name:"Business (B2B)",icon:"🤝",subs:["Business Lease Transfer","Business Partners","Businesses For Sale","Wholesale Products"]},
+ {name:"Services",icon:"🛠️",subs:["Accounting","Air Conditioning","Appliance Repair","Automotive","Beautician","Business","Career Counseling","Cargo","Catering","Cleaning","Computer","Construction","Counseling","Creative","Delivery","Dental","Education","Elder Care","ERP","Event Planning","Farm/Garden","Fashion & Design","Financial","Florist","Food & Drink","Food Delivery","Graphic Design","Guides/Interpreters","Health","Household","Immigration","Interior Design","Labor/Moving","Legal","Logistics","Manpower","Marketing","Medical","Mobile Apps","Passenger Transport","Pest Control","Pet Sitting","Photography","Printing","Real Estate","Recycling","Relocation","Restaurants","Satellite","Security","Software Development","Tailoring","Tax Preparation","Technical","Television","Training","Translation","Travel","Web Design & Development","Writing"]},
+ {name:"Popular Requests",icon:"📌",subs:["Job Seekers","Items Wanted","Housing Wanted","Roommates","Lessons Wanted"]}
+];
+let ads=[],jobs=[],users=[],siteConfig={},siteAnalytics={},postViewCounts=[];
+function safe(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function statusError(err){return err?.code||err?.message||"Unknown error"}
+function setMessage(id,text,error=false){const el=$(id);el.textContent=text;el.classList.toggle("error",error)}
+function requireAdmin(){if(!auth.currentUser)throw new Error("Admin authorization required.")}
+function timeValue(value){return value&&typeof value.toMillis==="function"?value.toMillis():0}
+function switchTab(name){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".tab-panel").forEach(p=>p.hidden=p.id!=="tab-"+name)}
+document.querySelector(".tabs").addEventListener("click",e=>{const button=e.target.closest("[data-tab]");if(button)switchTab(button.dataset.tab)});
+document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const button=$("loginSubmit");button.disabled=true;setMessage("loginMessage","Signing in…");try{await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value)}catch(err){setMessage("loginMessage","Login failed: "+statusError(err),true)}finally{button.disabled=false}});
+$("logout").addEventListener("click",()=>signOut(auth));
+onAuthStateChanged(auth,async user=>{
+  if(!user){$("loginPanel").hidden=false;$("adminPanel").hidden=true;$("logout").hidden=true;$("signedInAs").textContent="";return}
+  const admin=await isAdmin(user);
+  if(!admin){await signOut(auth);setMessage("loginMessage","Access denied. This account is not an authorized admin.",true);return}
+  $("loginPanel").hidden=true;$("adminPanel").hidden=false;$("logout").hidden=false;$("signedInAs").textContent="Signed in as "+(user.email||"authorized administrator");
+  await loadAll();
+});
+async function loadAll(){
+ requireAdmin();
+ setMessage("overviewMessage","Loading dashboard…");
+ try{
+  const results=await Promise.allSettled([
+   getDocs(collection(db,"ads")),
+   getDocs(collection(db,"jobs")),
+   getDocs(collection(db,"users")),
+   getDoc(doc(db,"siteConfig","home")),
+   getDoc(doc(db,"siteAnalytics","summary")),
+   getDocs(collection(db,"postViewCounts"))
+  ]);
+  const names=["ads","jobs","users","homepage settings","website analytics","post view counts"];
+  const failed=results.flatMap((r,i)=>r.status==="rejected"?[names[i]+": "+statusError(r.reason)]:[]);
+  if(results[0].status==="fulfilled")ads=results[0].value.docs.map(d=>({id:d.id,...d.data()}));
+  if(results[1].status==="fulfilled")jobs=results[1].value.docs.map(d=>({id:d.id,...d.data()}));
+  if(results[2].status==="fulfilled")users=results[2].value.docs.map(d=>({id:d.id,...d.data()}));
+  if(results[3].status==="fulfilled"&&results[3].value.exists())siteConfig=results[3].value.data();
+  if(results[4].status==="fulfilled"&&results[4].value.exists())siteAnalytics=results[4].value.data();
+  if(results[5].status==="fulfilled")postViewCounts=results[5].value.docs.map(d=>d.data());
+  refreshDashboard();renderAds();renderJobs();renderUsers();fillSettings();$("categoriesJson").value=JSON.stringify(Array.isArray(siteConfig.categories)?siteConfig.categories:DEFAULT_CATEGORIES,null,2);
+  setMessage("overviewMessage",failed.length?"Loaded available data; some sections need Firestore admin read rules: "+failed.join(" · "):"Dashboard data loaded.");
+ }catch(err){setMessage("overviewMessage","Could not load admin data: "+statusError(err),true)}
+}
+function refreshDashboard(){
+ $("pendingCount").textContent=ads.filter(a=>a.status==="pending").length;
+ $("approvedCount").textContent=ads.filter(a=>a.status==="approved").length;
+ $("jobCount").textContent=jobs.length;
+ const owners=new Set(ads.map(a=>a.ownerUid).filter(Boolean));users.forEach(u=>owners.add(u.id));
+ $("userCount").textContent=owners.size;
+ $("totalVisitCount").textContent=(Number(siteAnalytics.totalVisits)||0).toLocaleString();
+ $("uniqueVisitorCount").textContent=(Number(siteAnalytics.uniqueVisitors)||0).toLocaleString();
+ $("totalAdViewCount").textContent=postViewCounts.reduce((total,item)=>total+(Number(item.views)||0),0).toLocaleString();
+}
+function renderAds(){
+ const filter=$("adFilter").value,list=ads.filter(a=>filter==="all"||a.status===filter).sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));
+ $("adsList").innerHTML=list.length?list.map(a=>'<article class="row"><div><h3>'+safe(a.title||"Untitled ad")+' <span class="badge">'+safe(a.status||"unknown")+'</span></h3><div>'+safe(a.category||"")+" · "+safe(a.sub||"")+" · "+safe(a.city||"")+" · "+safe(a.country||"")+'</div><div class="muted">Owner: '+safe(a.ownerEmail||a.ownerUid||"unknown")+' · '+safe(a.id)+'</div></div><div class="actions"><button class="btn" data-ad-status="pending" data-id="'+safe(a.id)+'">Pending</button><button class="btn green" data-ad-status="approved" data-id="'+safe(a.id)+'">Approve</button><button class="btn" data-ad-status="rejected" data-id="'+safe(a.id)+'">Reject</button><button class="btn red" data-ad-delete="'+safe(a.id)+'">Delete</button></div></article>').join(""):'<div class="empty">No ads in this view.</div>';
+}
+$("adFilter").addEventListener("change",renderAds);
+$("adsList").addEventListener("click",async e=>{
+ const status=e.target.closest("[data-ad-status]"),remove=e.target.closest("[data-ad-delete]");if(!status&&!remove)return;
+ try{requireAdmin();const id=(status||remove).dataset.id;if(remove){if(!confirm("Permanently delete this ad?"))return;await deleteDoc(doc(db,"ads",id));ads=ads.filter(a=>a.id!==id);setMessage("adsMessage","Ad deleted.");}else{await updateDoc(doc(db,"ads",id),{status:status.dataset.adStatus,updatedAt:serverTimestamp()});const ad=ads.find(a=>a.id===id);if(ad)ad.status=status.dataset.adStatus;setMessage("adsMessage","Ad status updated.");}refreshDashboard();renderAds()}catch(err){setMessage("adsMessage","Could not update ad: "+statusError(err),true)}
+});
+function resetJobForm(){$("jobForm").reset();$("jobId").value="";$("jobStatus").value="approved";$("saveJob").textContent="Add job listing";$("cancelJob").hidden=true}
+function renderJobs(){
+ const list=[...jobs].sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));
+ $("jobsList").innerHTML=list.length?list.map(j=>'<article class="row"><div><h3>'+safe(j.title||"Untitled job")+' <span class="badge">'+safe(j.status||"unknown")+'</span></h3><div>'+safe(j.company||"")+" · "+safe(j.city||"")+" · "+safe(j.salary||"Salary not specified")+'</div><p>'+safe(j.description||"")+'</p></div><div class="actions"><button class="btn" data-job-edit="'+safe(j.id)+'">Edit</button><button class="btn red" data-job-delete="'+safe(j.id)+'">Delete</button></div></article>').join(""):'<div class="empty">No job listings yet.</div>';
+}
+$("jobForm").addEventListener("submit",async e=>{
+ e.preventDefault();const button=$("saveJob");button.disabled=true;
+ try{requireAdmin();const applyLink=$("applyLink").value.trim();if(applyLink&&!/^https:\/\//i.test(applyLink))throw new Error("Apply link must start with https://");
+  const job={title:$("title").value.trim(),company:$("company").value.trim(),city:$("city").value.trim(),salary:$("salary").value.trim(),description:$("description").value.trim(),applyLink,status:$("jobStatus").value,updatedAt:serverTimestamp()};
+  const id=$("jobId").value;if(id){await updateDoc(doc(db,"jobs",id),job);const found=jobs.find(x=>x.id===id);if(found)Object.assign(found,job);setMessage("jobsMessage","Job listing updated.");}
+  else{job.createdAt=serverTimestamp();job.createdBy=auth.currentUser.uid;const created=await addDoc(collection(db,"jobs"),job);jobs.push({id:created.id,...job});setMessage("jobsMessage","Job listing added.");}
+  resetJobForm();renderJobs();refreshDashboard();
+ }catch(err){setMessage("jobsMessage","Could not save job: "+statusError(err),true)}finally{button.disabled=false}
+});
+$("cancelJob").addEventListener("click",resetJobForm);
+$("jobsList").addEventListener("click",async e=>{
+ const edit=e.target.closest("[data-job-edit]"),remove=e.target.closest("[data-job-delete]");if(!edit&&!remove)return;
+ try{requireAdmin();const id=(edit||remove).dataset[edit?"jobEdit":"jobDelete"];if(remove){if(!confirm("Permanently delete this job listing?"))return;await deleteDoc(doc(db,"jobs",id));jobs=jobs.filter(j=>j.id!==id);renderJobs();refreshDashboard();setMessage("jobsMessage","Job listing deleted.");return}
+  const job=jobs.find(j=>j.id===id);if(!job)return;$("jobId").value=id;for(const key of ["title","company","city","salary","description","applyLink"])$(key).value=job[key]||"";$("jobStatus").value=job.status==="approved"?"approved":"draft";$("saveJob").textContent="Save changes";$("cancelJob").hidden=false;switchTab("jobs");window.scrollTo({top:0,behavior:"smooth"});
+ }catch(err){setMessage("jobsMessage","Could not manage job: "+statusError(err),true)}
+});
+$("saveCategories").addEventListener("click",async()=>{
+ try{requireAdmin();const parsed=JSON.parse($("categoriesJson").value);if(!Array.isArray(parsed)||parsed.some(c=>!c||typeof c.name!=="string"||!c.name.trim()||typeof c.icon!=="string"||!Array.isArray(c.subs)||c.subs.some(s=>typeof s!=="string")))throw new Error("Each category needs a name, icon and list of subcategories.");
+  await setDoc(doc(db,"siteConfig","home"),{categories:parsed,updatedAt:serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});siteConfig={...siteConfig,categories:parsed};setMessage("categoriesMessage","Categories saved."); 
+ }catch(err){setMessage("categoriesMessage","Could not save categories: "+statusError(err),true)}
+});
+function fillSettings(){
+ $("tagline").value=siteConfig.tagline??"Your Trusted Expat Community in Saudi Arabia";
+ $("heroTitle").value=siteConfig.heroTitle??"Welcome to ExpatSouq!";
+ $("heroText").value=siteConfig.heroText??"The community marketplace for expatriates. Find local classifieds, jobs, homes, services and great deals.";
+ $("supportEmail").value=siteConfig.supportEmail??"support@expatsouq.example";
+ $("showAds").checked=siteConfig.showAds!==false;$("showJobs").checked=siteConfig.showJobs!==false;$("allowPosting").checked=siteConfig.allowPosting!==false;
+}
+$("settingsForm").addEventListener("submit",async e=>{
+ e.preventDefault();try{requireAdmin();const supportEmail=$("supportEmail").value.trim();if(supportEmail&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(supportEmail))throw new Error("Enter a valid support email.");
+  const settings={tagline:$("tagline").value.trim(),heroTitle:$("heroTitle").value.trim(),heroText:$("heroText").value.trim(),supportEmail,showAds:$("showAds").checked,showJobs:$("showJobs").checked,allowPosting:$("allowPosting").checked,updatedAt:serverTimestamp(),updatedBy:auth.currentUser.uid};
+  await setDoc(doc(db,"siteConfig","home"),settings,{merge:true});siteConfig={...siteConfig,...settings};setMessage("settingsMessage","Homepage settings saved.");
+ }catch(err){setMessage("settingsMessage","Could not save settings: "+statusError(err),true)}
+});
+function renderUsers(){
+ const byId=new Map(users.map(u=>[u.id,{uid:u.id,email:u.email||u.displayName||"",profile:true,ads:[]}]));
+ for(const ad of ads){if(!ad.ownerUid)continue;const owner=byId.get(ad.ownerUid)||{uid:ad.ownerUid,email:ad.ownerEmail||"",profile:false,ads:[]};if(!owner.email&&ad.ownerEmail)owner.email=ad.ownerEmail;owner.ads.push(ad);byId.set(ad.ownerUid,owner)}
+ const rows=[...byId.values()].sort((a,b)=>(a.email||a.uid).localeCompare(b.email||b.uid));
+ $("usersList").innerHTML=rows.length?rows.map(u=>'<article class="row"><div><h3>'+safe(u.email||"Account email unavailable")+'</h3><div class="muted">UID: '+safe(u.uid)+'</div><div>'+u.ads.length+' ad(s) · '+u.ads.filter(a=>a.status==="pending").length+' pending · '+u.ads.filter(a=>a.status==="approved").length+' approved</div>'+(u.profile?'<span class="badge">Profile record</span>':'<span class="badge">From ad ownership</span>')+'</div></article>').join(""):'<div class="empty">No user profiles or ad owners found.</div>';
+}
+</script>
+</body>
+</html>
