@@ -14,7 +14,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return signedIn()
-        && request.auth.uid == '3iAZVHBrmIcxBdPwb9mfABqut3H2';
+        && request.auth.uid == 'ERVJZLM06fQzytjCTpoPh7X0SCx1';
     }
 
     match /ads/{adId} {
