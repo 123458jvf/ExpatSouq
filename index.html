@@ -457,12 +457,13 @@ document.getElementById("detailsShareButton").addEventListener("click",async()=>
  try{await navigator.clipboard.writeText(url);status.textContent="Link copied. Share it with others.";link.hidden=true}catch(err){console.warn("Could not copy the listing link",err);link.value=url;link.hidden=false;link.focus();link.select();status.textContent="Copy this link to share the listing."}
 });
 detailsContent.addEventListener("click",event=>{
- const link=event.target.closest("a[data-breadcrumb]");
- if(!link)return;
- event.preventDefault();
- const type=link.dataset.breadcrumb;
- closeAdDetails();
- navigateBrowse(type,link.dataset.value||"");
+  const link=event.target.closest("a[data-breadcrumb]");
+  if(!link)return;
+  event.preventDefault();
+  event.stopPropagation();
+  const type=link.dataset.breadcrumb;
+  closeAdDetails();
+  navigateBrowse(type,link.dataset.value||"");
 });
 window.addEventListener("popstate",()=>{
  const match=location.hash.match(/^#ad=(.+)$/);
