@@ -52,7 +52,7 @@
     </section>
     <section class="panel tab-panel" id="tab-ads" hidden>
       <h2>Classified ad moderation</h2>
-      <label class="field"><span>Show ads</span><select id="adFilter"><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="all">All ads</option></select></label>
+      <label class="field"><span>Show ads</span><select id="adFilter"><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="sponsor">Sponsor requests</option><option value="all">All ads</option></select></label>
       <div id="adsList"></div>
       <div id="adsMessage" class="message" role="status"></div>
     </section>
@@ -179,8 +179,8 @@ function refreshDashboard(){
  $("totalAdViewCount").textContent=postViewCounts.reduce((total,item)=>total+(Number(item.views)||0),0).toLocaleString();
 }
 function renderAds(){
- const filter=$("adFilter").value,list=ads.filter(a=>filter==="all"||a.status===filter).sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));
- $("adsList").innerHTML=list.length?list.map(a=>'<article class="row"><div><h3>'+safe(a.title||"Untitled ad")+' <span class="badge">'+safe(a.status||"unknown")+'</span></h3><div>'+safe(a.category||"")+" · "+safe(a.sub||"")+" · "+safe(a.city||"")+" · "+safe(a.country||"")+'</div><div class="muted">Owner: '+safe(a.ownerEmail||a.ownerUid||"unknown")+' · '+safe(a.id)+'</div></div><div class="actions"><button class="btn" data-ad-status="pending" data-id="'+safe(a.id)+'">Pending</button><button class="btn green" data-ad-status="approved" data-id="'+safe(a.id)+'">Approve</button><button class="btn" data-ad-status="rejected" data-id="'+safe(a.id)+'">Reject</button><button class="btn" data-ad-pin="'+safe(a.id)+'" data-pinned="'+(a.pinned?"1":"0")+'">'+(a.pinned?"Unpin":"Pin to top")+'</button><button class="btn" data-ad-sponsor="'+safe(a.id)+'" data-sponsored="'+(a.sponsored?"1":"0")+'">'+(a.sponsored?"Unsponsor":"Sponsor")+'</button><button class="btn red" data-ad-delete="'+safe(a.id)+'">Delete</button></div></article>').join(""):'<div class="empty">No ads in this view.</div>';
+ const filter=$("adFilter").value,list=ads.filter(a=>filter==="all"||filter==="sponsor"?a.sponsorRequested===true:a.status===filter).sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt));
+ $("adsList").innerHTML=list.length?list.map(a=>'<article class="row"><div><h3>'+safe(a.title||"Untitled ad")+' <span class="badge">'+safe(a.status||"unknown")+'</span>'+(a.sponsorRequested?' <span class="badge" style="background:#fff0d9;color:#8a5b15">SPONSOR REQ</span>':'')+(a.sponsored?' <span class="badge" style="background:#e8f5e9;color:#08634e">SPONSORED</span>':'')+'</h3><div>'+safe(a.category||"")+" · "+safe(a.sub||"")+" · "+safe(a.city||"")+" · "+safe(a.country||"")+'</div><div class="muted">Owner: '+safe(a.ownerEmail||a.ownerUid||"unknown")+' · '+safe(a.id)+'</div></div><div class="actions"><button class="btn" data-ad-status="pending" data-id="'+safe(a.id)+'">Pending</button><button class="btn green" data-ad-status="approved" data-id="'+safe(a.id)+'">Approve</button><button class="btn" data-ad-status="rejected" data-id="'+safe(a.id)+'">Reject</button><button class="btn" data-ad-pin="'+safe(a.id)+'" data-pinned="'+(a.pinned?"1":"0")+'">'+(a.pinned?"Unpin":"Pin to top")+'</button><button class="btn" data-ad-sponsor="'+safe(a.id)+'" data-sponsored="'+(a.sponsored?"1":"0")+'">'+(a.sponsored?"Unsponsor":"Sponsor")+'</button><button class="btn red" data-ad-delete="'+safe(a.id)+'">Delete</button></div></article>').join(""):'<div class="empty">No ads in this view.</div>';
 }
 $("adFilter").addEventListener("change",renderAds);
 $("adsList").addEventListener("click",async e=>{
