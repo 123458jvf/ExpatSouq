@@ -508,7 +508,23 @@ try{
   if(Array.isArray(settings.categories)){
    const grid=document.getElementById("categoryGrid"),select=document.getElementById("adCategory");
    const categories=settings.categories.filter(c=>c&&typeof c.name==="string"&&typeof c.icon==="string"&&Array.isArray(c.subs));
-   if(grid)grid.innerHTML=categories.map(c=>'<article class="catgroup"><h3><span>'+escapeHtml(c.icon)+'</span> <a href="#ads" data-category="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</a></h3><div class="catlist">'+c.subs.map(s=>'<a class="catlink" href="#ads" data-category="'+escapeHtml(s)+'">'+escapeHtml(s)+'</a>').join("")+'</div></article>').join("");
+    if(grid)grid.innerHTML=categories.map((c,i)=>'<article class="catgroup"><h3><span>'+escapeHtml(c.icon)+'</span> <a href="#ads" data-category="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</a></h3><div class="catlist">'+c.subs.slice(0,7).map(s=>'<a class="catlink" href="#ads" data-category="'+escapeHtml(s)+'">'+escapeHtml(s)+'</a>').join("")+'</div>'+(c.subs.length>7?'<a class="more" href="#ads" data-expand="'+i+'">View all '+c.subs.length+' subcategories ↓</a>':"")+'</article>').join("");
+    // Inline expand/collapse for the dynamically loaded categories (mirrors the main module).
+    grid?.addEventListener('click',e=>{
+      const ex=e.target.closest('[data-expand]');
+      if(!ex) return;
+      e.preventDefault();
+      const idx=Number(ex.dataset.expand);
+      const cat=categories[idx];
+      if(!cat) return;
+      const parent=ex.closest('.catgroup');
+      const list=parent?.querySelector('.catlist');
+      if(!list) return;
+      const expanded=ex.dataset.expanded==='true';
+      list.innerHTML=(expanded?cat.subs.slice(0,7):cat.subs).map(s=>'<a class="catlink" href="#ads" data-category="'+escapeHtml(s)+'">'+escapeHtml(s)+'</a>').join('');
+      ex.dataset.expanded=String(!expanded);
+      ex.textContent=expanded?'View all '+cat.subs.length+' subcategories ↓':'Show fewer ↑';
+    });
    if(select){const selected=select.value;select.innerHTML='<option value="">Choose category</option>'+categories.map(c=>'<option>'+escapeHtml(c.name)+'</option>').join("");if(categories.some(c=>c.name===selected))select.value=selected;const sub=document.getElementById("adSubcategory");select.addEventListener("change",()=>{if(sub){const category=categories.find(c=>c.name===select.value);sub.innerHTML='<option value="">Choose subcategory (optional)</option>'+(category?category.subs.map(name=>'<option>'+escapeHtml(name)+'</option>').join(""):"")}});select.dispatchEvent(new Event("change"))}
   }
   if(settings.showAds===false)document.getElementById("ads")?.setAttribute("hidden","");
