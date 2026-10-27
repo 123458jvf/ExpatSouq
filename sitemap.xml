@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://expatsouq.vercel.app/</loc></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://expatsouq.vercel.app/</loc></url>
+<url><loc>https://expatsouq.vercel.app/privacy.html</loc></url>
+<url><loc>https://expatsouq.vercel.app/terms.html</loc></url>
+<url><loc>https://expatsouq.vercel.app/advertising.html</loc></url>
+</urlset>

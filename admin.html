@@ -112,7 +112,20 @@ import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "htt
 import {getFirestore,collection,addDoc,getDocs,doc,getDoc,setDoc,updateDoc,deleteDoc,query,orderBy,serverTimestamp,where} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
-const ADMIN_UID="3iAZVHBrmIcxBdPwb9mfABqut3H2";
+// Admin role is determined by a Firestore document, not a hardcoded UID.
+// A user is an admin when a document exists at admins/{uid} (role:"admin")
+// or users/{uid} (role:"admin"). Seed the admin doc in Firestore before use.
+const ADMIN_DOC_PATHS=["admins","users"];
+async function isAdmin(user){
+  if(!user) return false;
+  for(const collection of ADMIN_DOC_PATHS){
+    try{
+      const snap=await getDoc(doc(db,collection,user.uid));
+      if(snap.exists()&&String(snap.data()?.role||"").toLowerCase()==="admin") return true;
+    }catch(err){console.warn("Could not read admin role from "+collection,err)}
+  }
+  return false;
+}
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 const DEFAULT_CATEGORIES=[
  {name:"Jobs",icon:"💼",subs:["Job Seekers","Temp Jobs"]},
@@ -132,17 +145,18 @@ let ads=[],jobs=[],users=[],siteConfig={},siteAnalytics={},postViewCounts=[];
 function safe(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function statusError(err){return err?.code||err?.message||"Unknown error"}
 function setMessage(id,text,error=false){const el=$(id);el.textContent=text;el.classList.toggle("error",error)}
-function requireAdmin(){if(!auth.currentUser||auth.currentUser.uid!==ADMIN_UID)throw new Error("Admin authorization required.")}
+function requireAdmin(){if(!auth.currentUser)throw new Error("Admin authorization required.")}
 function timeValue(value){return value&&typeof value.toMillis==="function"?value.toMillis():0}
 function switchTab(name){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".tab-panel").forEach(p=>p.hidden=p.id!=="tab-"+name)}
 document.querySelector(".tabs").addEventListener("click",e=>{const button=e.target.closest("[data-tab]");if(button)switchTab(button.dataset.tab)});
 document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const button=$("loginSubmit");button.disabled=true;setMessage("loginMessage","Signing in…");try{await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value)}catch(err){setMessage("loginMessage","Login failed: "+statusError(err),true)}finally{button.disabled=false}});
 $("logout").addEventListener("click",()=>signOut(auth));
 onAuthStateChanged(auth,async user=>{
- if(!user){$("loginPanel").hidden=false;$("adminPanel").hidden=true;$("logout").hidden=true;$("signedInAs").textContent="";return}
- if(user.uid!==ADMIN_UID){await signOut(auth);setMessage("loginMessage","Access denied. This account is not the authorized admin.",true);return}
- $("loginPanel").hidden=true;$("adminPanel").hidden=false;$("logout").hidden=false;$("signedInAs").textContent="Signed in as "+(user.email||"authorized administrator");
- await loadAll();
+  if(!user){$("loginPanel").hidden=false;$("adminPanel").hidden=true;$("logout").hidden=true;$("signedInAs").textContent="";return}
+  const admin=await isAdmin(user);
+  if(!admin){await signOut(auth);setMessage("loginMessage","Access denied. This account is not an authorized admin.",true);return}
+  $("loginPanel").hidden=true;$("adminPanel").hidden=false;$("logout").hidden=false;$("signedInAs").textContent="Signed in as "+(user.email||"authorized administrator");
+  await loadAll();
 });
 async function loadAll(){
  requireAdmin();
