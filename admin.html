@@ -22,8 +22,10 @@
     <form id="loginForm">
       <label class="field"><span>Admin email</span><input id="email" type="email" required autocomplete="username"></label>
       <label class="field"><span>Password</span><input id="password" type="password" required autocomplete="current-password"></label>
-      <button class="btn green" id="loginSubmit" type="submit">Log in</button>
+      <button class="btn green" id="loginSubmit" type="submit">Log in with email & password</button>
     </form>
+    <div class="actions" style="margin-top:12px"><button class="btn" id="googleAdminLogin" type="button">Sign in with Google</button><button class="btn" id="resetAdminPassword" type="button">Reset password by email</button></div>
+    <p class="muted">If this admin account was created with Google, use Google sign-in or reset its password first.</p>
     <div id="loginMessage" class="message" role="status"></div>
   </section>
   <section id="adminPanel" hidden>
@@ -108,12 +110,12 @@
 </main>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {getFirestore,collection,addDoc,getDocs,doc,getDoc,setDoc,updateDoc,deleteDoc,query,orderBy,serverTimestamp,where} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
 const ADMIN_UID="3iAZVHBrmIcxBdPwb9mfABqut3H2";
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+const app=initializeApp(firebaseConfig),adminApp=initializeApp(firebaseConfig,"expatsouq-admin-auth"),auth=getAuth(adminApp),db=getFirestore(app),$=id=>document.getElementById(id);
 const DEFAULT_CATEGORIES=[
  {name:"Jobs",icon:"💼",subs:["Job Seekers","Temp Jobs"]},
  {name:"Items For Sale",icon:"🛍️",subs:["Air Conditioners","Appliances","Auto Parts","Baby & Kid Stuff","Bicycles","Boats","Books","Clothing & Accessories","Collectibles","Computers","Electrical & Plumbing","Electronics","Farm & Garden","Food","Free Items","Furniture","Health & Beauty Items","Heavy Equipment","Home Audio","Household Items","Industrial Machinery","Jewelry","Machinery","Materials","Mobile Phones","Motorcycles","Musical Instruments","Perfumes & Fragrances","Pet Supplies","Photo & Video","Purses & Wallets","RC Hobby","Software","Sporting Goods","Tablet Computers","Tickets","Tools","Toys & Games","Vehicle Lease Transfer","Vehicles, Cars & Trucks","Video Games","Watches","Items Wanted"]},
@@ -136,7 +138,9 @@ function requireAdmin(){if(!auth.currentUser||auth.currentUser.uid!==ADMIN_UID)t
 function timeValue(value){return value&&typeof value.toMillis==="function"?value.toMillis():0}
 function switchTab(name){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".tab-panel").forEach(p=>p.hidden=p.id!=="tab-"+name)}
 document.querySelector(".tabs").addEventListener("click",e=>{const button=e.target.closest("[data-tab]");if(button)switchTab(button.dataset.tab)});
-document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const button=$("loginSubmit");button.disabled=true;setMessage("loginMessage","Signing in…");try{await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value)}catch(err){setMessage("loginMessage","Login failed: "+statusError(err),true)}finally{button.disabled=false}});
+document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const button=$("loginSubmit");button.disabled=true;setMessage("loginMessage","Signing in…");try{await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value)}catch(err){const messages={"auth/invalid-credential":"Email/password did not work. If this admin account uses Google, choose Sign in with Google or use Reset password by email.","auth/operation-not-allowed":"Email/password sign-in is disabled in Firebase Authentication.","auth/too-many-requests":"Too many attempts. Wait a while and try again.","auth/network-request-failed":"Network error. Check your internet connection."};setMessage("loginMessage","Login failed: "+(messages[err?.code]||statusError(err)),true)}finally{button.disabled=false}});
+$("googleAdminLogin").addEventListener("click",async()=>{const button=$("googleAdminLogin");button.disabled=true;setMessage("loginMessage","Opening Google sign-in…");try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(err){setMessage("loginMessage","Google sign-in failed: "+statusError(err),true)}finally{button.disabled=false}});
+$("resetAdminPassword").addEventListener("click",async()=>{const email=$("email").value.trim();if(!email){setMessage("loginMessage","Enter the admin email first, then tap Reset password by email.",true);$("email").focus();return}const button=$("resetAdminPassword");button.disabled=true;try{await sendPasswordResetEmail(auth,email);setMessage("loginMessage","If this email has an account, a password reset link has been sent. Check Inbox and Spam.")}catch(err){setMessage("loginMessage","Could not send reset email: "+statusError(err),true)}finally{button.disabled=false}});
 $("logout").addEventListener("click",()=>signOut(auth));
 onAuthStateChanged(auth,async user=>{
   if(!user){$("loginPanel").hidden=false;$("adminPanel").hidden=true;$("logout").hidden=true;$("signedInAs").textContent="";return}
