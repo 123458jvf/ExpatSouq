@@ -606,4 +606,19 @@ try{
   if(settings.allowPosting===false){for(const id of ["postBtn","bannerPost","footerPost"])document.getElementById(id)?.setAttribute("hidden","")}
  }
 }catch(error){console.warn("Could not load homepage settings:",error)}
-</script></body></html>
+</script><script>
+/* Open category choices on their own page while preserving the existing homepage and Firebase flows. */
+(function(){
+ const slug=function(value){return String(value||"").toLowerCase().trim().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")};
+ document.addEventListener("click",function(event){
+  const link=event.target.closest("#categoryGrid a[data-category], #popularSearches a[data-category]");
+  if(!link)return;
+  const category=link.getAttribute("data-category");
+  if(!category)return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  location.href="/category.html?category="+encodeURIComponent(slug(category));
+ },true);
+})();
+</script>
+</body></html>
