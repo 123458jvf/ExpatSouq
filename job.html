@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075e4b"><title>Job Details — ExpatSouq</title>
+<style>
+:root{--green:#08634e;--deep:#073d31;--gold:#efa844;--ink:#17251f;--muted:#64746b;--line:#dce6df;--paper:#f6f8f6}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Arial,Helvetica,sans-serif}
+a{color:inherit;text-decoration:none}.top{background:var(--deep);color:#e3f2e9;padding:9px 16px;font-size:12px}.wrap{width:min(850px,calc(100% - 28px));margin:auto}
+header{background:#fff;border-bottom:1px solid var(--line);padding:18px 0}.logo{font-weight:900;font-size:25px;color:var(--green)}.logo b{color:var(--gold)}
+main{padding:25px 0}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:0 4px 18px #073d310a}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:18px}.tag{display:inline-block;background:#e8f4ed;color:var(--green);font-weight:700;font-size:11px;padding:4px 8px;border-radius:5px}
+h1{font-size:clamp(24px,5vw,34px);line-height:1.2;margin:12px 0}.meta{color:var(--muted);margin:8px 0}.salary{font-size:18px;font-weight:700;margin:14px 0;color:var(--green)}.description{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:22px}
+.btn{display:inline-block;background:var(--green);color:#fff;padding:11px 16px;border-radius:8px;font-weight:700;margin:18px 8px 0 0;border:0}.btn.secondary{background:#fff;color:var(--green);border:1px solid var(--line)}
+#status{color:var(--muted)}footer{padding:20px 0;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body><div class="top">Jobs and classifieds for expats</div>
+<header><div class="wrap"><a class="logo" href="/">ExpatSouq<b>.</b></a></div></header>
+<main class="wrap"><div class="panel"><div class="crumb"><a href="/">Home</a> / <a href="/#jobs">Jobs</a> / Details</div><div id="status">Loading job details…</div><article id="job" hidden></article></div></main>
+<footer class="wrap">ExpatSouq — Jobs and classifieds for expats</footer>
+<script type="module">
+import {getApps,getApp,initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore,doc,getDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const config={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
+const app=getApps().length?getApp():initializeApp(config),db=getFirestore(app);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const params=new URLSearchParams(location.search),id=params.get("id"),source=params.get("source")==="ads"?"ads":"jobs";
+const status=document.getElementById("status"),article=document.getElementById("job");
+try{
+ if(!id)throw new Error("Missing job ID");
+ let snap=await getDoc(doc(db,source,id));
+ if(!snap.exists()&&source==="jobs"){snap=await getDoc(doc(db,"ads",id))}
+ if(!snap.exists())throw new Error("This listing may have been removed or is no longer available.");
+ const j=snap.data();
+ if(j.status&&j.status!=="approved")throw new Error("This listing is not currently available.");
+ const title=j.title||"Job opportunity",company=j.company||j.employer||"Company not specified",city=j.city||j.location||"Saudi Arabia",salary=j.salary||j.price||"Salary not specified",desc=j.description||j.desc||"No description provided.";
+ const apply=j.applyLink||j.applicationLink||"";
+ const phone=j.whatsapp||j.phone||j.contactPhone||"";
+ article.innerHTML='<span class="tag">JOB LISTING</span><h1>'+esc(title)+'</h1><div class="meta">🏢 '+esc(company)+' · 📍 '+esc(city)+(j.country?' · '+esc(j.country):'')+'</div><div class="salary">'+esc(salary)+'</div><div class="description">'+esc(desc)+'</div>'+(apply?'<a class="btn" href="'+esc(apply)+'" target="_blank" rel="noopener noreferrer">Apply for this job →</a>':'')+(phone?'<a class="btn" href="https://wa.me/'+esc(String(phone).replace(/[^0-9]/g,''))+'" target="_blank" rel="noopener noreferrer">Contact on WhatsApp</a>':'')+'<a class="btn secondary" href="/#jobs">← Back to jobs</a>';
+ status.hidden=true;article.hidden=false;document.title=title+' — ExpatSouq';
+}catch(e){status.textContent=e.message||"Could not load this job. Please return to the listings.";console.error(e)}
+</script></body></html>
