@@ -504,18 +504,48 @@ window.addEventListener("hashchange",()=>{
 document.getElementById("detailsShareLink").addEventListener("click",event=>event.currentTarget.select());
 document.addEventListener("keydown",event=>{if(event.key==="Escape"&&detailsOverlay.classList.contains("show"))document.getElementById("detailsBackButton").click()});
 
+let publicJobs=[];
 async function loadPublicJobs(){
- const grid=document.getElementById("jobGrid"),empty=document.getElementById("jobEmpty");
- if(!grid||!empty)return;
- try{
-  const snap=await getDocs(query(collection(db,"jobs"),where("status","==","approved")));
-  const jobs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));
-  if(!jobs.length){grid.innerHTML="";empty.style.display="block";return}
-  empty.style.display="none";
-  grid.innerHTML=jobs.map(j=>'<article class="adcard"><div class="advisual">💼</div><div class="adbody"><span class="tag">JOB LISTING</span><h3>'+safe(j.title||"Job opportunity")+'</h3><div class="price">'+safe(j.salary||"Salary not specified")+'</div><div class="admeta">🏢 '+safe(j.company||"Company not specified")+' · 📍 '+safe(j.city||"Saudi Arabia")+'</div><p class="admeta">'+safe(j.description||"")+'</p>'+(j.applyLink?'<a class="btn green" style="display:inline-block;margin-top:8px" href="'+safe(j.applyLink)+'" target="_blank" rel="noopener noreferrer">Apply now →</a>': '<div class="admeta">Contact employer for application details.</div>')+'</div></article>').join("");
- }catch(err){console.warn("Could not load public job listings",err);grid.innerHTML='<div class="panel"><h3>Job listings temporarily unavailable</h3><p>Job listings will appear here after the database is configured.</p></div>'}
+  const grid=document.getElementById("jobGrid"),empty=document.getElementById("jobEmpty");
+  if(!grid||!empty)return;
+  try{
+   const snap=await getDocs(query(collection(db,"jobs"),where("status","==","approved")));
+   publicJobs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));
+   if(!publicJobs.length){grid.innerHTML="";empty.style.display="block";return}
+   empty.style.display="none";
+   grid.innerHTML=publicJobs.map(j=>'<article class="adcard" data-job-id="'+safe(j.id)+'"><div class="advisual">💼</div><div class="adbody"><span class="tag">JOB LISTING</span><h3>'+safe(j.title||"Job opportunity")+'</h3><div class="price">'+safe(j.salary||"Salary not specified")+'</div><div class="admeta">🏢 '+safe(j.company||"Company not specified")+' · 📍 '+safe(j.city||"Saudi Arabia")+'</div><p class="admeta">'+safe(j.description||"")+'</p>'+(j.applyLink?'<a class="btn green" style="display:inline-block;margin-top:8px" href="'+safe(j.applyLink)+'" target="_blank" rel="noopener noreferrer">Apply now →</a>': '<div class="admeta">Contact employer for application details.</div>')+'</div></article>').join("");
+  }catch(err){console.warn("Could not load public job listings",err);grid.innerHTML='<div class="panel"><h3>Job listings temporarily unavailable</h3><p>Job listings will appear here after the database is configured.</p></div>'}
+}
+function showJobDetails(job){
+  const overlay=document.getElementById("adDetailsOverlay");
+  if(!overlay) return;
+  const title=safe(job.title||"Job opportunity");
+  const company=safe(job.company||"Company not specified");
+  const city=safe(job.city||"Saudi Arabia");
+  const salary=safe(job.salary||"Salary not specified");
+  const desc=safe(job.description||"No description provided.");
+  const applyLink=job.applyLink?safe(job.applyLink):"";
+  const content=document.getElementById("adDetailsContent");
+  content.innerHTML='<nav class="details-crumbs" aria-label="Breadcrumb"><a href="#" data-breadcrumb="home">Home</a><span class="details-crumb-separator" aria-hidden="true">/</span><a href="#ads?scope=international" data-breadcrumb="international">International</a><span class="details-crumb-separator" aria-hidden="true">/</span><a href="#ads?category=Jobs" data-breadcrumb="category" data-value="Jobs">Jobs</a></nav><h2 id="adDetailsTitle">'+title+'</h2><div class="details-price">'+salary+'</div><div class="details-meta">🏢 '+company+' · 📍 '+city+'</div><div class="details-description">'+desc+'</div>'+(applyLink?'<div class="details-contact"><a class="btn green" href="'+applyLink+'" target="_blank" rel="noopener noreferrer">Apply now →</a></div>':'<div class="details-contact"><div class="admeta">Contact employer for application details.</div></div>');
+  overlay.classList.add("show");
+  content.scrollTop=0;
+  document.getElementById("detailsBackButton").focus();
 }
 loadPublicJobs();
+// Make job cards clickable to view details (mirrors ad cards).
+const jobGridEl=document.getElementById("jobGrid");
+if(jobGridEl){
+  jobGridEl.addEventListener("click",event=>{
+    const apply=event.target.closest("a[href]");
+    if(apply) return;
+    const card=event.target.closest("article.adcard");
+    if(!card||!jobGridEl.contains(card)) return;
+    const id=card.dataset.jobId;
+    const job=publicJobs.find(j=>j.id===id);
+    if(!job) return;
+    showJobDetails(job);
+  });
+}
 
 </script><script type="module">
 import {getApps,getApp,initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
