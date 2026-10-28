@@ -258,6 +258,19 @@ function renderAds(){
   const image=a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌");
   return '<article class="adcard" data-ad-key="'+safe(adShareKey(a))+'"><div class="advisual">'+image+'</div><div class="adbody"><span class="tag">'+(a.sponsored?"★ SPONSORED · ":"")+category+'</span><div class="listing-title-line"><h3>'+title+'</h3><span class="price">'+price+'</span></div><div class="admeta">📍 '+place+'</div><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div></div></article>';
  }).join("");
+ adGrid.querySelectorAll("article.adcard[data-ad-key]").forEach((card,index)=>{
+  card.style.cursor="pointer";
+  card.setAttribute("role","button");
+  card.tabIndex=0;
+  card.addEventListener("click",event=>{
+   if(event.target.closest("button,a,input,select,textarea,[data-edit-ad],[data-delete-ad]"))return;
+   const selected=filtered[index];
+   if(selected)showAdDetails(selected);
+  });
+  card.addEventListener("keydown",event=>{
+   if(event.key==="Enter"||event.key===" "){event.preventDefault();const selected=filtered[index];if(selected)showAdDetails(selected);}
+  });
+ });
  noResults.style.display=filtered.length?"none":"block";
  document.getElementById("adSub").textContent=filtered.length+" listings shown · sample previews and approved community ads";
  updateBrowsePage();
