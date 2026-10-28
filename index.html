@@ -470,13 +470,18 @@ function prepareAdCards(){
 }
 new MutationObserver(prepareAdCards).observe(adGrid,{childList:true,subtree:true});
 prepareAdCards();
-adGrid.addEventListener("click",event=>{
- const card=event.target.closest("article.adcard[data-ad-key]");
- if(!card||!adGrid.contains(card)||event.target.closest("button, a")||card.querySelector("[data-edit-ad], [data-delete-ad]"))return;
+document.addEventListener("click",event=>{
+ const target=event.target instanceof Element?event.target:null;
+ const card=target?.closest("article.adcard[data-ad-key]");
+ if(!card||!adGrid.contains(card)||target.closest("button, a, input, select, textarea, [data-edit-ad], [data-delete-ad]"))return;
  const key=card.dataset.adKey;
  const ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);
- if(ad)showAdDetails(ad);
-});
+ if(!ad)return;
+ event.preventDefault();
+ event.stopPropagation();
+ event.stopImmediatePropagation();
+ showAdDetails(ad);
+},true);
 adGrid.addEventListener("keydown",event=>{
  if((event.key==="Enter"||event.key===" ")&&event.target.matches("article.adcard[role=button]")){event.preventDefault();event.target.click()}
 });
