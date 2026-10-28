@@ -256,7 +256,7 @@ function renderAds(){
   const place=[a.city,a.area,a.country].filter(Boolean).map(safe).join(", ")||"Location not specified";
   const price=formatPrice(a.price, a.unit);
   const image=a.imageUrl?'<img src="'+safe(a.imageUrl)+'" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">':safe(a.icon||"📌");
-  return '<article class="adcard"><div class="advisual">'+image+'</div><div class="adbody"><span class="tag">'+(a.sponsored?"★ SPONSORED · ":"")+category+'</span><div class="listing-title-line"><h3>'+title+'</h3><span class="price">'+price+'</span></div><div class="admeta">📍 '+place+'</div><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div></div></article>';
+  return '<article class="adcard" data-ad-key="'+safe(adShareKey(a))+'"><div class="advisual">'+image+'</div><div class="adbody"><span class="tag">'+(a.sponsored?"★ SPONSORED · ":"")+category+'</span><div class="listing-title-line"><h3>'+title+'</h3><span class="price">'+price+'</span></div><div class="admeta">📍 '+place+'</div><div class="admeta">'+(a.status==="approved"?"COMMUNITY AD":"SAMPLE PREVIEW")+'</div></div></article>';
  }).join("");
  noResults.style.display=filtered.length?"none":"block";
  document.getElementById("adSub").textContent=filtered.length+" listings shown · sample previews and approved community ads";
@@ -471,9 +471,10 @@ function prepareAdCards(){
 new MutationObserver(prepareAdCards).observe(adGrid,{childList:true,subtree:true});
 prepareAdCards();
 adGrid.addEventListener("click",event=>{
- const card=event.target.closest("article.adcard");
+ const card=event.target.closest("article.adcard[data-ad-key]");
  if(!card||!adGrid.contains(card)||event.target.closest("button, a")||card.querySelector("[data-edit-ad], [data-delete-ad]"))return;
- const cards=[...adGrid.querySelectorAll("article.adcard")],index=cards.indexOf(card),ad=getVisiblePublicAds()[index];
+ const key=card.dataset.adKey;
+ const ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);
  if(ad)showAdDetails(ad);
 });
 adGrid.addEventListener("keydown",event=>{
