@@ -5,7 +5,7 @@
 </style></head><body><div class="top"><div class="wrap">Your trusted expatriate community marketplace · Saudi Arabia and worldwide</div></div><header class="nav"><div class="wrap navin"><a class="logo" href="/">⌂ Expat<b>Souq</b></a><div><a class="btn" href="/">Home</a> <a class="btn" href="/#postBtn">＋ Post Ad</a></div></div></header><section class="hero"><div class="wrap"><h1 id="pageTitle">Browse Classifieds</h1><p class="muted" id="pageDesc">Explore approved listings by category.</p><form id="filters" class="filters"><input id="q" placeholder="Search listings..." aria-label="Search listings"><select id="country"><option value="">All countries</option></select><button class="btn" type="submit">Search</button></form><div class="cats" id="categoryLinks"></div></div></section><main class="wrap section"><div class="head"><h2 id="listTitle">Latest approved ads</h2><span class="muted" id="count"></span></div><div id="results" class="grid"><div class="empty">Loading approved listings…</div></div></main><footer><div class="wrap">© 2026 ExpatSouq · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></div></footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyCyKrdW6BLIK-aSLsN04lEpe_8X7ZTxYyo",authDomain:"expatsouq-7f964.firebaseapp.com",projectId:"expatsouq-7f964",storageBucket:"expatsouq-7f964.firebasestorage.app",messagingSenderId:"421619491074",appId:"1:421619491074:web:9fde0b86a477ec4719621b",measurementId:"G-WJ461RJPGT"};
 const db=getFirestore(initializeApp(firebaseConfig));
 const categories=[
@@ -18,7 +18,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const norm=s=>String(s||"").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g," ").trim();
 let ads=[];
 try{
- const snap=await getDocs(collection(db,"ads"));
+ const snap=await getDocs(query(collection(db,"ads"),where("status","==","approved")));
  ads=snap.docs.map(d=>({id:d.id,...d.data()})).filter(a=>String(a.status||"").toLowerCase()==="approved");
  const countries=[...new Set(ads.map(a=>a.country).filter(Boolean))].sort();document.getElementById("country").innerHTML='<option value="">All countries</option>'+countries.map(c=>'<option>'+esc(c)+'</option>').join("");
 }catch(e){document.getElementById("results").innerHTML='<div class="empty">Listings could not load right now. Please refresh the page.</div>';console.error(e)}
