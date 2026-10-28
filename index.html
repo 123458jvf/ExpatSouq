@@ -487,13 +487,13 @@ document.addEventListener("click",event=>{
  const target=event.target instanceof Element?event.target:null;
  const card=target?.closest("article.adcard[data-ad-key]");
  if(!card||!adGrid.contains(card)||target.closest("button, a, input, select, textarea, [data-edit-ad], [data-delete-ad]"))return;
- const key=card.dataset.adKey;
- const ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);
- if(!ad)return;
- event.preventDefault();
- event.stopPropagation();
- event.stopImmediatePropagation();
- showAdDetails(ad);
+const key=card.dataset.adKey;
+  const ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);
+  if(!ad){console.warn("ad not found for key",key);return}
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  try{showAdDetails(ad)}catch(e){console.error("showAdDetails failed",e)}
 },true);
 adGrid.addEventListener("keydown",event=>{
  if((event.key==="Enter"||event.key===" ")&&event.target.matches("article.adcard[role=button]")){event.preventDefault();event.target.click()}
