@@ -300,7 +300,8 @@ function updateBrowsePage(){
  document.getElementById("browsePageTitle").textContent=selected;
 }
 function navigateBrowse(type,value="",category=""){
- document.getElementById("query").value="";
+  if(type==="place"&&normalizeFilterText(value)==="saudi arabia"){location.href="/saudi-arabia.html";return}
+  document.getElementById("query").value="";
  document.getElementById("location").value="";
  document.getElementById("country").value="";
  document.getElementById("area").value="";
@@ -313,10 +314,11 @@ function navigateBrowse(type,value="",category=""){
  else document.getElementById("ads").scrollIntoView({behavior:"smooth"});
 }
 function applyBrowseRouteFromHash(){
- const match=location.hash.match(/^#ads\?(.*)$/);
- activeScope="";activePlace="";activeCategory="";
- if(match){const route=new URLSearchParams(match[1]);activeScope=route.get("scope")||"";activePlace=route.get("place")||"";activeCategory=route.get("category")||""}
- updateBrowsePage();
+  const match=location.hash.match(/^#ads\?(.*)$/);
+  activeScope="";activePlace="";activeCategory="";
+  if(match){const route=new URLSearchParams(match[1]);activeScope=route.get("scope")||"";activePlace=route.get("place")||"";activeCategory=route.get("category")||""}
+  if(normalizeFilterText(activePlace)==="saudi arabia"){location.href="/saudi-arabia.html";return}
+  updateBrowsePage();
  if(match)document.getElementById("ads").scrollIntoView({behavior:"smooth"});
 }
 applyBrowseRouteFromHash();
