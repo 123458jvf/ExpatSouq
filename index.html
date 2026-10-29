@@ -479,7 +479,8 @@ document.addEventListener("click",event=>{
  if(!card||!adGrid.contains(card)||target.closest("button, a, input, select, textarea, [data-edit-ad], [data-delete-ad]"))return;
 const key=card.dataset.adKey;
   const ad=[...liveAds,...samples].find(item=>adShareKey(item)===key);
-  if(!ad){console.warn("ad not found for key",key);return}
+  if(!ad)return;
+  if(ad.id){location.href="/details.html?id="+encodeURIComponent(ad.id);return}
   event.preventDefault();
   event.stopPropagation();
   event.stopImmediatePropagation();
