@@ -282,11 +282,13 @@ function browseTrail(){
   else if(saudiPlaces.includes(place)){trail.push({label:"Saudi Arabia",type:"place"},{label:activePlace,type:"place"})}
   else trail.push({label:activePlace,type:"place"});
  }
- if(activeCategory){
-  const category=normalizeFilterText(activeCategory);
-  if(["job","job seekers"].includes(category)){trail.push({label:"Jobs",type:"category"});trail.push({label:activeCategory,type:"category"})}
-  else trail.push({label:activeCategory,type:"category"});
- }
+if(activeCategory){
+   const category=normalizeFilterText(activeCategory);
+   const parent=categories.find(c=>c.subs.some(s=>normalizeFilterText(s)===category));
+   if(parent&&normalizeFilterText(parent.name)!==category)trail.push({label:parent.name,type:"category"});
+   if(["job","job seekers"].includes(category)){trail.push({label:"Jobs",type:"category"});trail.push({label:activeCategory,type:"category"})}
+   else trail.push({label:activeCategory,type:"category"});
+  }
  return trail.filter((item,index,items)=>items.findIndex(candidate=>candidate.label.toLowerCase()===item.label.toLowerCase())===index);
 }
 function updateBrowsePage(){
